@@ -1,0 +1,19 @@
+{
+	"name": "corvidae",
+	"version": "2.0.0",
+	"description": "CORVIDAE Obsidian Plugin von ein.ink",
+	"main": "main.js",
+	"type": "module",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"build:release": "tsc -noEmit -skipLibCheck && BUILD_MODE=release node esbuild.config.mjs production"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^22.15.17",
+		"esbuild": "0.25.5",
+		"obsidian": "latest",
+		"typescript": "^5.8.3"
+	}
+}

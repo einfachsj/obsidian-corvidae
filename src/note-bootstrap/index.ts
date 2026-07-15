@@ -1,0 +1,1 @@
+export { NoteBootstrap } from "./manager";

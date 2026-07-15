@@ -1,0 +1,3 @@
+# pnpm 11: Build-Skripte fuer esbuild erlauben (wird fuer `pnpm run build` benoetigt)
+allowBuilds:
+  esbuild: true
