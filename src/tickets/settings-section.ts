@@ -183,7 +183,7 @@ function renderProjectCard(
 	new Setting(card).addButton((button) =>
 		button
 			.setButtonText(t("settings.tickets.removeProject"))
-			.setDestructive()
+			.setWarning()
 			.onClick(async () => {
 				plugin.settings.ticketProjects = plugin.settings.ticketProjects.filter(
 					(entry) => entry.id !== project.id

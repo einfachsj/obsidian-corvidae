@@ -395,7 +395,7 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	async saveSettings(): Promise<void> {
-		const raw: unknown = await this.loadData();
+		const raw = (await this.loadData()) as unknown;
 		const existing = isRecord(raw) ? raw : {};
 		await this.saveData({
 			...existing,
@@ -413,7 +413,7 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	private async loadSettings(): Promise<void> {
-		const data: unknown = await this.loadData();
+		const data = (await this.loadData()) as unknown;
 		const rawData = isRecord(data) ? data : {};
 		const { dashboardBoxes: _dashboardBoxes, ...settingsData } = rawData;
 		const hadExcludePrefixes = Array.isArray(

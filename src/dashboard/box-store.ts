@@ -298,7 +298,7 @@ export class DashboardBoxStore {
 	}
 
 	async persist(): Promise<void> {
-		const raw: unknown = await this.plugin.loadData();
+		const raw = (await this.plugin.loadData()) as unknown;
 		const existing = isRecord(raw) ? raw : {};
 		await this.plugin.saveData({
 			...existing,

@@ -1,8 +1,8 @@
 {
 	"id": "corvidae",
 	"name": "Corvidae",
-	"version": "2.0.4",
-	"minAppVersion": "1.12.0",
+	"version": "2.0.5",
+	"minAppVersion": "1.12.7",
 	"description": "Configure a modular dashboard with graph, note, browser, and terminal boxes. Manage project tickets in a sidebar, sync folder notes and hybrid links, auto-fill frontmatter, customize the explorer, and style graph node sizes and colors.",
 	"author": "ein.ink",
 	"authorUrl": "https://ein.ink",
