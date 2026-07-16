@@ -2,7 +2,6 @@ node_modules/
 build/
 main.js
 main.js.map
-styles.css
 data.json
 backup/
 .DS_Store
