@@ -1,6 +1,6 @@
 # CORVIDAE
 
-**v2.0.4** · Obsidian plugin by [ein.ink](https://ein.ink)
+**v2.0.5** · Obsidian plugin by [ein.ink](https://ein.ink)
 
 Configure a modular dashboard for your vault — graph, notes, websites, and terminals in one workspace, plus project tickets, folder notes, and graph styling tools.
 
