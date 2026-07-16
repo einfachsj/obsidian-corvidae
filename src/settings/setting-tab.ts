@@ -16,7 +16,6 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		containerEl.createEl("h2", { text: t("settings.title") });
 		containerEl.createEl("p", {
 			text: t("settings.subtitle"),
 			cls: "setting-item-description",
@@ -65,7 +64,7 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("settings.dashboard.heading") });
+		new Setting(containerEl).setHeading().setName(t("settings.dashboard.heading"));
 
 		new Setting(containerEl)
 			.setName(t("settings.dashboard.autoOpen.name"))
@@ -144,7 +143,7 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("settings.folderNotes.heading") });
+		new Setting(containerEl).setHeading().setName(t("settings.folderNotes.heading"));
 
 		new Setting(containerEl)
 			.setName(t("settings.folderNotes.enabled.name"))
@@ -207,7 +206,7 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("settings.newNotes.heading") });
+		new Setting(containerEl).setHeading().setName(t("settings.newNotes.heading"));
 
 		new Setting(containerEl)
 			.setName(t("settings.newNotes.autoFrontmatter.name"))
@@ -265,7 +264,7 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("settings.advanced.heading") });
+		new Setting(containerEl).setHeading().setName(t("settings.advanced.heading"));
 
 		new Setting(containerEl)
 			.setName(t("settings.advanced.patchInterval.name"))

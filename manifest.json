@@ -1,7 +1,7 @@
 {
 	"id": "corvidae",
 	"name": "CORVIDAE",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"minAppVersion": "1.12.7",
 	"description": "Configure a modular Obsidian dashboard with graph, note, browser, and terminal boxes. Manage project tickets in a sidebar, sync folder notes and hybrid links, auto-fill frontmatter, customize the explorer, and style graph node sizes and colors.",
 	"author": "ein.ink",

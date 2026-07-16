@@ -265,8 +265,7 @@ export class FolderNoteManager {
 			await this.defer(deferMs);
 			try {
 				return await task();
-			} catch (error) {
-				console.debug("CORVIDAE folder-note:", error);
+			} catch {
 				return undefined as T;
 			}
 		});

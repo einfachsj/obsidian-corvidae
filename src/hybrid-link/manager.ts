@@ -114,8 +114,7 @@ export class HybridLinkManager {
 			if (this.processing.has(key)) return undefined as T;
 			try {
 				return await task();
-			} catch (error) {
-				console.debug("CORVIDAE hybrid-link:", error);
+			} catch {
 				return undefined as T;
 			}
 		});

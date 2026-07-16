@@ -196,8 +196,6 @@ export default class CorvidaePlugin extends Plugin {
 				this.dashboardLayoutManager.scheduleSync();
 			})
 		);
-
-		console.log(t("console.loaded"));
 	}
 
 	private async handleFileCreated(file: TFile): Promise<void> {
@@ -229,7 +227,6 @@ export default class CorvidaePlugin extends Plugin {
 		this.dashboardTicketBoxEmbed.detachAll();
 		this.legendManager.removeAll(this.getGraphLeaves());
 		this.stopPatchInterval();
-		console.log(t("console.unloaded"));
 	}
 
 	onLanguageChanged(): void {

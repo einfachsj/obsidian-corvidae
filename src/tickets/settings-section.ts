@@ -17,11 +17,10 @@ export function renderTicketsSettingsSection(
 	containerEl: HTMLElement,
 	plugin: CorvidaePlugin
 ): void {
-	containerEl.createEl("h3", { text: t("settings.tickets.heading") });
-	containerEl.createEl("p", {
-		text: t("settings.tickets.desc"),
-		cls: "setting-item-description",
-	});
+	new Setting(containerEl)
+		.setHeading()
+		.setName(t("settings.tickets.heading"))
+		.setDesc(t("settings.tickets.desc"));
 
 	new Setting(containerEl)
 		.setName(t("settings.tickets.autoOpen.name"))
