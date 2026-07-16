@@ -1,0 +1,1047 @@
+/* Properties in Notizen ausblenden (Frontmatter bleibt für Graph/Explorer aktiv) */
+
+.markdown-source-view.mod-cm6 .metadata-container,
+.markdown-source-view .metadata-container,
+.markdown-preview-view .metadata-container {
+	display: none;
+}
+
+/* CORVIDAE – Graph-Legende */
+
+.corvidae-legend-host {
+	position: relative;
+}
+
+.corvidae-legend {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 50;
+	padding: 10px 14px;
+	border-radius: 8px;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	font-size: 12px;
+	color: var(--text-normal);
+	pointer-events: none;
+	user-select: none;
+	max-height: 40vh;
+	overflow-y: auto;
+	min-width: 140px;
+}
+
+.corvidae-legend-title {
+	font-weight: 600;
+	margin-bottom: 8px;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 10px;
+	text-align: center;
+	width: 100%;
+}
+
+.corvidae-legend-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.corvidae-legend-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.corvidae-legend-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.corvidae-legend-label {
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 180px;
+}
+
+/* Explorer-Toolbar ausblenden (New note, Sort, …) */
+
+body .workspace-leaf-content[data-type="file-explorer"] .nav-header,
+body .workspace-leaf-content[data-type="file-explorer"] .nav-buttons-container,
+body .nav-files-container .nav-buttons-container {
+	display: none;
+}
+
+.nav-file.corvidae-folder-note-hidden {
+	display: none;
+}
+
+.nav-folder.corvidae-folder-note > .nav-folder-title > .nav-folder-title-content {
+	cursor: pointer;
+}
+
+.nav-folder.corvidae-folder-note > .nav-folder-title > .nav-folder-title-content:hover {
+	color: var(--nav-item-color-hover);
+}
+
+/* Aufklapp-Pfeil → Kreis (nur Datei-Explorer) */
+
+.nav-files-container .nav-folder-collapse-indicator svg,
+.nav-files-container .nav-folder .tree-item-icon svg {
+	display: none;
+}
+
+.nav-files-container .nav-folder-collapse-indicator,
+.nav-files-container .nav-folder > .nav-folder-title > .tree-item-icon.collapse-icon {
+	width: 8px;
+	height: 8px;
+	min-width: 8px;
+	border-radius: 50%;
+	box-sizing: border-box;
+	flex-shrink: 0;
+	align-self: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: -16px;
+}
+
+.nav-files-container .nav-folder-collapse-indicator.is-collapsed,
+.nav-files-container .nav-folder.is-collapsed > .nav-folder-title > .tree-item-icon.collapse-icon {
+	background: transparent;
+	border: 1.5px solid var(--text-muted);
+}
+
+.nav-files-container .nav-folder-collapse-indicator:not(.is-collapsed),
+.nav-files-container .nav-folder:not(.is-collapsed) > .nav-folder-title > .tree-item-icon.collapse-icon {
+	background: var(--text-muted);
+	border: 1.5px solid var(--text-muted);
+}
+
+.nav-files-container .nav-folder-collapse-indicator:hover,
+.nav-files-container .nav-folder > .nav-folder-title > .tree-item-icon.collapse-icon:hover {
+	border-color: var(--text-normal);
+}
+
+.nav-files-container .nav-folder-collapse-indicator:not(.is-collapsed):hover,
+.nav-files-container .nav-folder:not(.is-collapsed) > .nav-folder-title > .tree-item-icon.collapse-icon:hover {
+	background: var(--text-normal);
+	border-color: var(--text-normal);
+}
+
+/* order/type-Badges im nativen Datei-Explorer */
+
+.corvidae-nav-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-inline-start: auto;
+	flex-shrink: 0;
+	padding-inline-start: 6px;
+}
+
+.corvidae-nav-order {
+	font-size: var(--font-ui-smaller, 10px);
+	color: var(--text-faint);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.4;
+}
+
+.corvidae-nav-type {
+	font-size: var(--font-ui-smaller, 10px);
+	color: var(--text-faint);
+	background: var(--background-modifier-border);
+	padding: 1px var(--size-2-2, 5px);
+	border-radius: var(--radius-s, 3px);
+	flex-shrink: 0;
+	line-height: 1.4;
+}
+
+/* CORVIDAE Dashboard */
+
+/* Hide dashboard tab in tab strip (notes keep their tabs) */
+body .workspace-tab-header[data-type="corvidae-dashboard"] {
+	display: none;
+}
+
+/* Hide new-tab (+) while only the full dashboard is shown */
+.workspace-tabs.corvidae-hide-new-tab .workspace-tab-header-new-tab {
+	display: none;
+}
+
+/* Bottom dashboard bar: no tab strip */
+.workspace-tabs.corvidae-dashboard-bar-tabs > .workspace-tab-header-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	border: none;
+}
+
+.workspace-tabs.corvidae-dashboard-bar-tabs > .workspace-tab-container {
+	height: 100%;
+}
+
+/* Bottom dashboard bar: fixed 250px */
+.mod-root
+	.workspace-split.corvidae-dashboard-bar-split
+	> .workspace-tabs.corvidae-dashboard-bar-tabs {
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: 250px;
+	height: 250px;
+	max-height: 250px;
+	min-height: 250px;
+}
+
+.mod-root
+	.workspace-split.corvidae-dashboard-bar-split
+	> .workspace-tabs:not(.corvidae-dashboard-bar-tabs) {
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+.corvidae-dashboard-view--bar {
+	overflow: hidden;
+}
+
+.corvidae-dashboard-view--bar .corvidae-dashboard {
+	max-width: none;
+	margin: 0;
+	padding: 10px 12px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
+.corvidae-crow-profile-button.is-active {
+	color: var(--interactive-accent);
+}
+
+.corvidae-crow-profile-button.is-disabled {
+	opacity: 0.45;
+}
+
+.corvidae-dashboard-view {
+	height: 100%;
+	overflow: auto;
+}
+
+.corvidae-dashboard {
+	max-width: none;
+	margin: 0;
+	padding: 32px 24px 48px;
+}
+
+.corvidae-dashboard-title {
+	margin: 0;
+	font-size: 1.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	color: var(--text-normal);
+}
+
+.corvidae-dashboard-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+.corvidae-dashboard-toolbar-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.corvidae-dashboard-crow-link {
+	cursor: pointer;
+	font-size: 2rem;
+	line-height: 1;
+	user-select: none;
+}
+
+.corvidae-dashboard-crow-link:hover {
+	opacity: 0.8;
+}
+
+.corvidae-dashboard-crow-link:focus-visible {
+	outline: none;
+}
+
+.corvidae-dashboard-toolbar-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background: var(--background-secondary);
+	color: var(--text-normal);
+	cursor: pointer;
+	font-size: var(--font-ui-small);
+}
+
+.corvidae-dashboard-toolbar-button:hover:not(:disabled) {
+	background: var(--background-modifier-hover);
+	border-color: var(--background-modifier-border-hover);
+}
+
+.corvidae-dashboard-toolbar-button.is-disabled,
+.corvidae-dashboard-toolbar-button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.corvidae-dashboard-toolbar-button-icon {
+	display: flex;
+	align-items: center;
+}
+
+.corvidae-dashboard-toolbar-button.is-active {
+	border-color: var(--interactive-accent);
+	color: var(--interactive-accent);
+	background: var(--background-modifier-active-hover);
+}
+
+.corvidae-dashboard-box-grid {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	grid-auto-rows: 100px;
+	gap: 12px;
+	min-height: 240px;
+	position: relative;
+	align-content: start;
+}
+
+.corvidae-dashboard-box-grid.is-move-mode {
+	outline: 1px dashed var(--background-modifier-border);
+	outline-offset: 4px;
+	border-radius: 12px;
+}
+
+.corvidae-dashboard-box-empty {
+	grid-column: 1 / -1;
+	padding: 32px 24px;
+	border: 1px dashed var(--background-modifier-border);
+	border-radius: 12px;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+.corvidae-dashboard-move-slot {
+	border: 1px dashed var(--background-modifier-border-hover);
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--interactive-accent) 8%, transparent);
+	cursor: pointer;
+	min-height: 100px;
+	z-index: 1;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.corvidae-dashboard-move-slot:hover {
+	border-color: var(--interactive-accent);
+	background: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
+}
+
+.corvidae-dashboard-move-slot.is-current {
+	border-style: solid;
+	border-color: var(--interactive-accent);
+	background: color-mix(in srgb, var(--interactive-accent) 12%, transparent);
+	cursor: default;
+	pointer-events: none;
+}
+
+.corvidae-dashboard-box {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	padding: 0;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 12px;
+	background: var(--background-secondary);
+	min-height: 100px;
+	overflow: hidden;
+	z-index: 2;
+	position: relative;
+}
+
+.corvidae-dashboard-box.is-move-target {
+	z-index: 3;
+}
+
+.corvidae-dashboard-box.is-resizing {
+	z-index: 4;
+	opacity: 0.92;
+}
+
+.corvidae-dashboard-box.is-resize-invalid {
+	border-color: var(--background-modifier-error);
+	box-shadow: 0 0 0 1px var(--background-modifier-error);
+}
+
+.corvidae-dashboard-box-resize-handle {
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	width: 16px;
+	height: 16px;
+	border-right: 2px solid var(--interactive-accent);
+	border-bottom: 2px solid var(--interactive-accent);
+	border-bottom-right-radius: 3px;
+	cursor: se-resize;
+	z-index: 5;
+	touch-action: none;
+}
+
+.corvidae-dashboard-box-resize-handle:hover {
+	border-color: var(--text-accent);
+	filter: brightness(1.1);
+}
+
+.corvidae-dashboard-box.is-selected {
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 1px var(--interactive-accent);
+}
+
+.corvidae-dashboard-box-title {
+	display: block;
+	width: 100%;
+	height: 20px;
+	min-height: 20px;
+	max-height: 20px;
+	margin: 0;
+	padding: 0 8px;
+	border: none;
+	border-bottom: 1px solid var(--background-modifier-border);
+	border-radius: 0;
+	background: var(--background-primary);
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	line-height: 20px;
+	color: var(--text-normal);
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+.corvidae-dashboard-box-title:hover {
+	background: var(--background-modifier-hover);
+}
+
+.corvidae-dashboard-box.is-selected .corvidae-dashboard-box-title {
+	background: var(--background-modifier-active-hover);
+	color: var(--interactive-accent);
+}
+
+.corvidae-box-modal .corvidae-box-type-setting select {
+	background-color: var(--background-modifier-form-field);
+	color: var(--text-muted);
+}
+
+.corvidae-box-modal .corvidae-box-type-setting select:focus {
+	color: var(--text-normal);
+}
+
+.corvidae-box-modal .corvidae-box-note-setting.is-hidden,
+.corvidae-box-modal .corvidae-box-link-setting.is-hidden,
+.corvidae-box-modal .corvidae-box-ticket-project-setting.is-hidden,
+.corvidae-box-modal .corvidae-box-ticket-display-setting.is-hidden {
+	display: none;
+}
+
+.corvidae-note-suggest-title {
+	font-weight: 600;
+}
+
+.corvidae-note-suggest-path {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+
+.corvidae-dashboard-box-body--graph,
+.corvidae-dashboard-box-body--note,
+.corvidae-dashboard-box-body--browser,
+.corvidae-dashboard-box-body--terminal,
+.corvidae-dashboard-box-body--ticket {
+	padding: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-graph-workspace {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-graph-workspace .workspace-tab-header-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-graph-workspace .workspace-tabs {
+	height: 100%;
+}
+
+.corvidae-box-graph-workspace .workspace-tab-container {
+	height: 100%;
+}
+
+.corvidae-box-graph-workspace .workspace-leaf {
+	height: 100%;
+	width: 100%;
+	min-height: 0;
+}
+
+.corvidae-box-graph-workspace .workspace-leaf-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-graph-workspace .view-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-graph-workspace .view-header,
+.corvidae-box-graph-workspace .view-header-title {
+	display: none;
+}
+
+.corvidae-box-graph-workspace .graph-view {
+	height: 100%;
+}
+
+.corvidae-box-graph-workspace .view-content,
+.corvidae-box-graph-workspace .graph-view {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.corvidae-box-graph-workspace .view-content::-webkit-scrollbar,
+.corvidae-box-graph-workspace .graph-view::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+/* Dashboard embeds: hide toolbars/overlays */
+.corvidae-dashboard-view .corvidae-box-graph-workspace .graph-controls,
+.corvidae-dashboard-view .corvidae-box-graph-workspace .corvidae-legend {
+	display: none;
+}
+
+.corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .App-toolbar,
+.corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .tray-misc-tools-container,
+.corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .Island {
+	display: none;
+}
+
+.corvidae-box-graph-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.corvidae-box-note-workspace {
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-note-workspace .workspace-tab-header-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-note-workspace .workspace-tabs {
+	height: 100%;
+}
+
+.corvidae-box-note-workspace .workspace-tab-container {
+	height: 100%;
+}
+
+.corvidae-box-note-workspace .workspace-leaf {
+	height: 100%;
+	width: 100%;
+	min-height: 0;
+}
+
+.corvidae-box-note-workspace .workspace-leaf-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-note-workspace .view-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-note-workspace .view-header,
+.corvidae-box-note-workspace .view-header-title {
+	display: none;
+}
+
+.corvidae-box-note-workspace .markdown-preview-view,
+.corvidae-box-note-workspace .markdown-source-view {
+	height: 100%;
+}
+
+.corvidae-box-note-workspace .markdown-preview-view {
+	padding: 15px 30px;
+}
+
+.corvidae-box-note-workspace .markdown-preview-view .markdown-preview-sizer {
+	padding: 0;
+	max-width: 100%;
+}
+
+.corvidae-box-note-workspace .inline-title {
+	display: none;
+}
+
+.corvidae-box-note-workspace .markdown-preview-view .metadata-container {
+	display: none;
+}
+
+.corvidae-box-note-workspace .markdown-preview-view hr:first-of-type {
+	display: none;
+}
+
+.corvidae-box-note-workspace .view-content,
+.corvidae-box-note-workspace .markdown-preview-view,
+.corvidae-box-note-workspace .markdown-source-view {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.corvidae-box-note-workspace .view-content::-webkit-scrollbar,
+.corvidae-box-note-workspace .markdown-preview-view::-webkit-scrollbar,
+.corvidae-box-note-workspace .markdown-source-view::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.corvidae-box-note-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.corvidae-box-ticket-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: auto;
+	padding: 8px 10px;
+}
+
+.corvidae-box-ticket-content {
+	min-height: 0;
+}
+
+.corvidae-box-ticket-empty {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	padding: 8px 4px;
+}
+
+.corvidae-box-terminal-workspace {
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-terminal-workspace .workspace-tab-header-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-terminal-workspace .workspace-tabs {
+	height: 100%;
+}
+
+.corvidae-box-terminal-workspace .workspace-tab-container {
+	height: 100%;
+}
+
+.corvidae-box-terminal-workspace .workspace-leaf {
+	height: 100%;
+	width: 100%;
+	min-height: 0;
+}
+
+.corvidae-box-terminal-workspace .workspace-leaf-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-terminal-workspace .view-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-terminal-workspace .view-header,
+.corvidae-box-terminal-workspace .view-header-title {
+	display: none;
+}
+
+.corvidae-box-terminal-workspace .view-content {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.corvidae-box-terminal-workspace .view-content::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.corvidae-box-terminal-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.corvidae-terminal-unavailable {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 12px;
+	text-align: center;
+}
+
+.corvidae-terminal-unavailable-text {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	line-height: 1.4;
+}
+
+.corvidae-box-browser-workspace {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-browser-workspace .workspace-tab-header-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.corvidae-box-browser-workspace .workspace-tabs,
+.corvidae-box-browser-workspace .workspace-tab-container {
+	height: 100%;
+}
+
+.corvidae-box-browser-workspace .workspace-leaf {
+	height: 100%;
+	width: 100%;
+	min-height: 0;
+}
+
+.corvidae-box-browser-workspace .workspace-leaf-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-browser-workspace .view-content {
+	height: 100%;
+	padding: 0;
+}
+
+.corvidae-box-browser-workspace .view-header,
+.corvidae-box-browser-workspace .view-header.view-header-always-show,
+.corvidae-box-browser-workspace .view-header-title,
+.corvidae-box-browser-workspace .view-header-title-container {
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+	border-bottom: 0;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.corvidae-dashboard-view .corvidae-box-browser-workspace .view-content {
+	padding-top: 0;
+}
+
+.corvidae-dashboard-view .corvidae-box-browser-host,
+.corvidae-dashboard-view .corvidae-box-browser-workspace,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-split,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-tabs,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-tab-container,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-leaf,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-leaf-content,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .view-content,
+.corvidae-dashboard-view .corvidae-box-browser-workspace .webviewer-content {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.corvidae-dashboard-view .corvidae-box-browser-host::-webkit-scrollbar,
+.corvidae-dashboard-view .corvidae-box-browser-workspace::-webkit-scrollbar,
+.corvidae-dashboard-view .corvidae-box-browser-workspace *::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.corvidae-hide-native-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.corvidae-box-browser-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.corvidae-browser-unavailable {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 12px;
+	text-align: center;
+}
+
+.corvidae-browser-unavailable-text {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	line-height: 1.4;
+}
+
+.corvidae-dashboard-box-body {
+	flex: 1;
+	min-height: 0;
+}
+
+.corvidae-box-modal .setting-item:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border: none;
+}
+
+.corvidae-dashboard-modal-actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 0;
+	padding-top: 12px;
+	width: 100%;
+}
+
+.corvidae-dashboard-modal-actions-right {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	margin: 0;
+}
+
+.corvidae-dashboard-modal-actions button,
+.corvidae-dashboard-modal-delete {
+	margin: 0;
+}
+
+.corvidae-dashboard-modal-delete {
+	border: 1px solid var(--background-modifier-error);
+	background: var(--background-modifier-error);
+	color: var(--text-on-accent);
+	cursor: pointer;
+	padding: 6px 12px;
+	border-radius: 6px;
+	font-size: var(--font-ui-small);
+}
+
+.corvidae-dashboard-modal-delete:hover {
+	filter: brightness(1.08);
+}
+
+/* Bar mode: compact boxes in a horizontal row */
+
+.corvidae-dashboard-bar-scroll {
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: thin;
+}
+
+.corvidae-dashboard-bar-track {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: 10px;
+	height: 100%;
+	width: max-content;
+	min-height: 0;
+	padding: 2px 0;
+}
+
+.corvidae-dashboard-bar-empty {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	white-space: nowrap;
+	padding: 8px 12px;
+}
+
+.corvidae-dashboard-box--bar {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	box-sizing: border-box;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.corvidae-dashboard-box--bar .corvidae-dashboard-box-title {
+	height: 24px;
+	min-height: 24px;
+	max-height: 24px;
+	line-height: 24px;
+	font-size: var(--font-ui-smaller);
+}
+
+.corvidae-dashboard-box--bar .corvidae-dashboard-box-body {
+	flex: 1;
+	min-height: 0;
+}
+
+/* CORVIDAE – Ticket-Sidebar */
+
+.corvidae-tickets-sidebar-bottom .workspace-tab-header-container {
+	min-height: var(--header-height);
+}
+
+.corvidae-tickets-sidebar-bottom .workspace-leaf-content[data-type="corvidae-tickets"] {
+	height: 100%;
+}
+
+.corvidae-tickets-view {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 12px;
+	box-sizing: border-box;
+	overflow-y: auto;
+}
+
+.corvidae-tickets-content {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.corvidae-tickets-empty,
+.corvidae-tickets-project-error {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin: 0;
+}
+
+.corvidae-tickets-project {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background: var(--background-secondary);
+}
+
+.corvidae-tickets-project-title {
+	margin: 0;
+	font-size: var(--font-ui-medium);
+	font-weight: 600;
+}
+
+.corvidae-tickets-input {
+	width: 100%;
+	min-height: 72px;
+	resize: vertical;
+	padding: 8px;
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+	color: var(--text-normal);
+	font-family: var(--font-text);
+	font-size: var(--font-ui-small);
+	box-sizing: border-box;
+}
+
+.corvidae-tickets-actions {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.corvidae-tickets-settings-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.corvidae-tickets-settings-card {
+	padding: 8px 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background: var(--background-secondary);
+}
+
+.corvidae-folder-suggest-title {
+	font-weight: 600;
+}
+
+.corvidae-folder-suggest-path {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+

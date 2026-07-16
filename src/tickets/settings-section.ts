@@ -2,7 +2,6 @@ import { Setting } from "obsidian";
 import { t } from "../i18n";
 import type CorvidaePlugin from "../main";
 import type { TicketProjectConfig } from "../settings";
-import { activateTicketsSidebar } from "./activate";
 import { FolderPathSuggest } from "./folder-suggest";
 import { NotePathSuggest, getNoteDisplayLabel } from "../dashboard/note-suggest";
 
@@ -13,9 +12,51 @@ function createProjectId(): string {
 	return `ticket-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
+/** Project list + add/remove UI for settings (heading/autoOpen live elsewhere). */
+export function renderTicketProjectsEditor(
+	containerEl: HTMLElement,
+	plugin: CorvidaePlugin,
+	onUpdate?: () => void
+): void {
+	const listEl = containerEl.createDiv({ cls: "corvidae-tickets-settings-list" });
+
+	const renderProjects = (): void => {
+		listEl.empty();
+		for (const project of plugin.settings.ticketProjects) {
+			renderProjectCard(listEl, plugin, project, () => {
+				renderProjects();
+				onUpdate?.();
+			});
+		}
+	};
+
+	new Setting(containerEl).addButton((button) =>
+		button
+			.setButtonText(t("settings.tickets.addProject"))
+			.setCta()
+			.onClick(async () => {
+				plugin.settings.ticketProjects.push({
+					id: createProjectId(),
+					name: t("settings.tickets.defaultProjectName"),
+					undoneFolder: "",
+					doneFolder: "",
+					developmentLogPath: "",
+				});
+				await plugin.saveSettings();
+				plugin.refreshTicketsViews();
+				renderProjects();
+				onUpdate?.();
+			})
+	);
+
+	renderProjects();
+}
+
+/** @deprecated Prefer declarative tickets toggle + {@link renderTicketProjectsEditor}. */
 export function renderTicketsSettingsSection(
 	containerEl: HTMLElement,
-	plugin: CorvidaePlugin
+	plugin: CorvidaePlugin,
+	onUpdate?: () => void
 ): void {
 	new Setting(containerEl)
 		.setHeading()
@@ -31,41 +72,11 @@ export function renderTicketsSettingsSection(
 				.onChange(async (value) => {
 					plugin.settings.ticketsSidebarAutoOpen = value;
 					await plugin.saveSettings();
-					if (value) {
-						void activateTicketsSidebar(plugin.app);
-					}
+					onUpdate?.();
 				})
 		);
 
-	const listEl = containerEl.createDiv({ cls: "corvidae-tickets-settings-list" });
-
-	const renderProjects = (): void => {
-		listEl.empty();
-		for (const project of plugin.settings.ticketProjects) {
-			renderProjectCard(listEl, plugin, project, renderProjects);
-		}
-	};
-
-	new Setting(containerEl)
-		.addButton((button) =>
-			button
-				.setButtonText(t("settings.tickets.addProject"))
-				.setCta()
-				.onClick(async () => {
-					plugin.settings.ticketProjects.push({
-						id: createProjectId(),
-						name: t("settings.tickets.defaultProjectName"),
-						undoneFolder: "",
-						doneFolder: "",
-						developmentLogPath: "",
-					});
-					await plugin.saveSettings();
-					plugin.refreshTicketsViews();
-					renderProjects();
-				})
-		);
-
-	renderProjects();
+	renderTicketProjectsEditor(containerEl, plugin, onUpdate);
 }
 
 function renderProjectCard(

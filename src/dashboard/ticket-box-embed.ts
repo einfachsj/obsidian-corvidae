@@ -1,4 +1,4 @@
-import { MarkdownRenderer, TFile } from "obsidian";
+import { Component, MarkdownRenderer, TFile } from "obsidian";
 import { t } from "../i18n";
 import type CorvidaePlugin from "../main";
 import type { DashboardBox } from "./box-types";
@@ -10,6 +10,7 @@ interface TicketBoxMount {
 	projectId: string;
 	displayMode: "last" | "all";
 	sourcePath: string;
+	renderComponent: Component | null;
 }
 
 export class DashboardTicketBoxEmbed {
@@ -57,8 +58,9 @@ export class DashboardTicketBoxEmbed {
 	): Promise<void> {
 		const activeIds = new Set(ticketBoxes.map((box) => box.id));
 
-		for (const [boxId] of this.mounts.entries()) {
+		for (const [boxId, mount] of this.mounts.entries()) {
 			if (!activeIds.has(boxId)) {
+				this.disposeMount(mount);
 				this.mounts.delete(boxId);
 			}
 		}
@@ -71,7 +73,15 @@ export class DashboardTicketBoxEmbed {
 	}
 
 	detachAll(): void {
+		for (const mount of this.mounts.values()) {
+			this.disposeMount(mount);
+		}
 		this.mounts.clear();
+	}
+
+	private disposeMount(mount: TicketBoxMount): void {
+		mount.renderComponent?.unload();
+		mount.renderComponent = null;
 	}
 
 	private async syncAllMounted(): Promise<void> {
@@ -95,6 +105,7 @@ export class DashboardTicketBoxEmbed {
 
 		const entry: TicketBoxMount = hostChanged
 			? (() => {
+					if (existing) this.disposeMount(existing);
 					host.empty();
 					const next: TicketBoxMount = {
 						host,
@@ -102,6 +113,7 @@ export class DashboardTicketBoxEmbed {
 						projectId,
 						displayMode,
 						sourcePath,
+						renderComponent: null,
 					};
 					this.mounts.set(box.id, next);
 					return next;
@@ -120,6 +132,8 @@ export class DashboardTicketBoxEmbed {
 		box: DashboardBox,
 		mount: TicketBoxMount
 	): Promise<void> {
+		mount.renderComponent?.unload();
+		mount.renderComponent = null;
 		mount.contentEl.empty();
 
 		if (!mount.projectId) {
@@ -160,12 +174,16 @@ export class DashboardTicketBoxEmbed {
 			return;
 		}
 
+		const component = new Component();
+		component.load();
+		mount.renderComponent = component;
+
 		await MarkdownRenderer.render(
 			this.plugin.app,
 			markdown,
 			mount.contentEl,
 			file.path,
-			this.plugin
+			component
 		);
 	}
 

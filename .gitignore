@@ -1,7 +1,6 @@
 node_modules/
-build/
-main.js
-main.js.map
+/main.js
+/main.js.map
 data.json
 backup/
 .DS_Store

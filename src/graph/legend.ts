@@ -1,6 +1,7 @@
 import { WorkspaceLeaf } from "obsidian";
 import type { CorvidaeSettings } from "../settings";
 import { isDashboardGraphEmbed } from "../dashboard/embed-workspace";
+import { isRecord } from "../frontmatter/utils";
 import { t } from "../i18n";
 import type { LegendEntry } from "./patcher";
 import type { GraphViewLike, WorkspaceLeafLike } from "./types";
@@ -8,9 +9,8 @@ import type { GraphViewLike, WorkspaceLeafLike } from "./types";
 const LEGEND_CLASS = "corvidae-legend";
 
 function asGraphView(view: unknown): GraphViewLike | null {
-	if (!view || typeof view !== "object") return null;
-	if (!("containerEl" in view)) return null;
-	const containerEl = (view as { containerEl: unknown }).containerEl;
+	if (!isRecord(view)) return null;
+	const containerEl = view["containerEl"];
 	if (
 		!containerEl ||
 		typeof containerEl !== "object" ||
@@ -18,7 +18,7 @@ function asGraphView(view: unknown): GraphViewLike | null {
 	) {
 		return null;
 	}
-	return view as GraphViewLike;
+	return { containerEl: containerEl as HTMLElement };
 }
 
 export class LegendManager {

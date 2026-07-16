@@ -395,7 +395,7 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	async saveSettings(): Promise<void> {
-		const raw = await this.loadData();
+		const raw: unknown = await this.loadData();
 		const existing = isRecord(raw) ? raw : {};
 		await this.saveData({
 			...existing,
@@ -413,110 +413,117 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	private async loadSettings(): Promise<void> {
-		const data = await this.loadData();
+		const data: unknown = await this.loadData();
 		const rawData = isRecord(data) ? data : {};
 		const { dashboardBoxes: _dashboardBoxes, ...settingsData } = rawData;
 		const hadExcludePrefixes = Array.isArray(
 			settingsData.folderNoteExcludePrefixes
 		);
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			settingsData
-		) as CorvidaeSettings;
 
-		if (!Array.isArray(this.settings.defaultTags)) {
-			this.settings.defaultTags = [];
-		}
-		const configDir = this.app.vault.configDir;
-		if (!hadExcludePrefixes || !Array.isArray(this.settings.folderNoteExcludePrefixes)) {
-			this.settings.folderNoteExcludePrefixes = [configDir, ".trash"];
-		} else {
-			this.settings.folderNoteExcludePrefixes =
-				this.settings.folderNoteExcludePrefixes
-					.filter((p): p is string => typeof p === "string")
-					.map((p) => (p === ".obsidian" ? configDir : p));
-		}
-		if (typeof this.settings.showLegend !== "boolean") {
-			this.settings.showLegend = DEFAULT_SETTINGS.showLegend;
-		}
-		if (typeof this.settings.legendShowDefaultAndUncolored !== "boolean") {
-			this.settings.legendShowDefaultAndUncolored =
-				DEFAULT_SETTINGS.legendShowDefaultAndUncolored;
-		}
-		if (typeof this.settings.autoFrontmatter !== "boolean") {
-			this.settings.autoFrontmatter = DEFAULT_SETTINGS.autoFrontmatter;
-		}
-		if (typeof this.settings.folderNoteEnabled !== "boolean") {
-			this.settings.folderNoteEnabled = DEFAULT_SETTINGS.folderNoteEnabled;
-		}
-		if (typeof this.settings.folderNoteSyncRename !== "boolean") {
-			this.settings.folderNoteSyncRename = DEFAULT_SETTINGS.folderNoteSyncRename;
-		}
-		if (typeof this.settings.folderNoteOpenOnClick !== "boolean") {
-			this.settings.folderNoteOpenOnClick = DEFAULT_SETTINGS.folderNoteOpenOnClick;
-		}
-		if (typeof this.settings.folderNoteHideInExplorer !== "boolean") {
-			this.settings.folderNoteHideInExplorer =
-				DEFAULT_SETTINGS.folderNoteHideInExplorer;
-		}
-		if (typeof this.settings.dashboardAutoOpen !== "boolean") {
-			this.settings.dashboardAutoOpen = DEFAULT_SETTINGS.dashboardAutoOpen;
-		}
-		if (typeof this.settings.filePropertiesSidebarInitialized !== "boolean") {
-			this.settings.filePropertiesSidebarInitialized =
-				DEFAULT_SETTINGS.filePropertiesSidebarInitialized;
-		}
-		if (typeof this.settings.sizeProperty !== "string") {
-			this.settings.sizeProperty = DEFAULT_SETTINGS.sizeProperty;
-		}
-		if (typeof this.settings.colorProperty !== "string") {
-			this.settings.colorProperty = DEFAULT_SETTINGS.colorProperty;
-		}
-		if (typeof this.settings.minSize !== "number") {
-			this.settings.minSize = DEFAULT_SETTINGS.minSize;
-		}
-		if (typeof this.settings.maxSize !== "number") {
-			this.settings.maxSize = DEFAULT_SETTINGS.maxSize;
-		}
-		if (typeof this.settings.defaultSize !== "number") {
-			this.settings.defaultSize = DEFAULT_SETTINGS.defaultSize;
-		}
-		if (typeof this.settings.defaultColor !== "string") {
-			this.settings.defaultColor = DEFAULT_SETTINGS.defaultColor;
-		}
-		if (typeof this.settings.patchIntervalMs !== "number") {
-			this.settings.patchIntervalMs = DEFAULT_SETTINGS.patchIntervalMs;
-		}
+		this.settings = { ...DEFAULT_SETTINGS };
+
 		if (
-			this.settings.language !== "auto" &&
-			this.settings.language !== "en" &&
-			this.settings.language !== "de"
+			settingsData.language === "auto" ||
+			settingsData.language === "en" ||
+			settingsData.language === "de"
 		) {
-			this.settings.language = DEFAULT_SETTINGS.language;
+			this.settings.language = settingsData.language;
+		}
+		if (typeof settingsData.showLegend === "boolean") {
+			this.settings.showLegend = settingsData.showLegend;
+		}
+		if (typeof settingsData.legendShowDefaultAndUncolored === "boolean") {
+			this.settings.legendShowDefaultAndUncolored =
+				settingsData.legendShowDefaultAndUncolored;
+		}
+		if (typeof settingsData.autoFrontmatter === "boolean") {
+			this.settings.autoFrontmatter = settingsData.autoFrontmatter;
+		}
+		if (typeof settingsData.folderNoteEnabled === "boolean") {
+			this.settings.folderNoteEnabled = settingsData.folderNoteEnabled;
+		}
+		if (typeof settingsData.folderNoteSyncRename === "boolean") {
+			this.settings.folderNoteSyncRename = settingsData.folderNoteSyncRename;
+		}
+		if (typeof settingsData.folderNoteOpenOnClick === "boolean") {
+			this.settings.folderNoteOpenOnClick = settingsData.folderNoteOpenOnClick;
+		}
+		if (typeof settingsData.folderNoteHideInExplorer === "boolean") {
+			this.settings.folderNoteHideInExplorer =
+				settingsData.folderNoteHideInExplorer;
+		}
+		if (typeof settingsData.dashboardAutoOpen === "boolean") {
+			this.settings.dashboardAutoOpen = settingsData.dashboardAutoOpen;
+		}
+		if (typeof settingsData.filePropertiesSidebarInitialized === "boolean") {
+			this.settings.filePropertiesSidebarInitialized =
+				settingsData.filePropertiesSidebarInitialized;
+		}
+		if (typeof settingsData.sizeProperty === "string") {
+			this.settings.sizeProperty = settingsData.sizeProperty;
+		}
+		if (typeof settingsData.colorProperty === "string") {
+			this.settings.colorProperty = settingsData.colorProperty;
+		}
+		if (typeof settingsData.minSize === "number") {
+			this.settings.minSize = settingsData.minSize;
+		}
+		if (typeof settingsData.maxSize === "number") {
+			this.settings.maxSize = settingsData.maxSize;
+		}
+		if (typeof settingsData.defaultSize === "number") {
+			this.settings.defaultSize = settingsData.defaultSize;
+		}
+		if (typeof settingsData.defaultColor === "string") {
+			this.settings.defaultColor = settingsData.defaultColor;
+		}
+		if (typeof settingsData.patchIntervalMs === "number") {
+			this.settings.patchIntervalMs = settingsData.patchIntervalMs;
+		}
+		if (typeof settingsData.ticketsSidebarAutoOpen === "boolean") {
+			this.settings.ticketsSidebarAutoOpen = settingsData.ticketsSidebarAutoOpen;
 		}
 
-		if (!Array.isArray(this.settings.ticketProjects)) {
+		if (Array.isArray(settingsData.defaultTags)) {
+			this.settings.defaultTags = settingsData.defaultTags.filter(
+				(tag): tag is string => typeof tag === "string"
+			);
+		}
+
+		const configDir = this.app.vault.configDir;
+		if (!hadExcludePrefixes) {
+			this.settings.folderNoteExcludePrefixes = [configDir, ".trash"];
+		} else if (Array.isArray(settingsData.folderNoteExcludePrefixes)) {
+			this.settings.folderNoteExcludePrefixes =
+				settingsData.folderNoteExcludePrefixes.filter(
+					(p): p is string => typeof p === "string"
+				);
+		}
+
+		if (!Array.isArray(settingsData.ticketProjects)) {
 			this.settings.ticketProjects = [];
 		} else {
-			this.settings.ticketProjects = this.settings.ticketProjects.filter(
-				(project): project is typeof project =>
-					typeof project === "object" &&
-					project !== null &&
-					typeof project.id === "string" &&
-					typeof project.name === "string" &&
-					typeof project.undoneFolder === "string" &&
-					typeof project.doneFolder === "string"
-			);
-			for (const project of this.settings.ticketProjects) {
-				if (typeof project.developmentLogPath !== "string") {
-					project.developmentLogPath = "";
+			this.settings.ticketProjects = settingsData.ticketProjects.flatMap(
+				(project) => {
+					if (!isRecord(project)) return [];
+					if (typeof project.id !== "string") return [];
+					if (typeof project.name !== "string") return [];
+					if (typeof project.undoneFolder !== "string") return [];
+					if (typeof project.doneFolder !== "string") return [];
+					return [
+						{
+							id: project.id,
+							name: project.name,
+							undoneFolder: project.undoneFolder,
+							doneFolder: project.doneFolder,
+							developmentLogPath:
+								typeof project.developmentLogPath === "string"
+									? project.developmentLogPath
+									: "",
+						},
+					];
 				}
-			}
-		}
-		if (typeof this.settings.ticketsSidebarAutoOpen !== "boolean") {
-			this.settings.ticketsSidebarAutoOpen =
-				DEFAULT_SETTINGS.ticketsSidebarAutoOpen;
+			);
 		}
 
 		this.dashboardBoxStore.loadFromData(data);

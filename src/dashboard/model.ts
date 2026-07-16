@@ -26,9 +26,8 @@ function shouldSkipPath(path: string, settings: CorvidaeSettings): boolean {
 
 function readProjectMeta(app: App, file: TFile, settings: CorvidaeSettings) {
 	const cache = app.metadataCache.getFileCache(file);
-	const frontmatter = isRecord(cache?.frontmatter)
-		? (cache.frontmatter as Record<string, unknown>)
-		: undefined;
+	const fm = cache?.frontmatter;
+	const frontmatter = isRecord(fm) ? fm : undefined;
 	const colorRaw: unknown = frontmatter?.[settings.colorProperty];
 	const color = normalizeHexColor(colorRaw) ?? undefined;
 
