@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # CORVIDAE
 
 **v2.0.0** · Obsidian plugin by [ein.ink](https://ein.ink)
@@ -75,4 +74,3 @@ MIT — see [LICENSE](LICENSE)
 =======
 # obsidian-corvidae
 Configure a modular Obsidian dashboard with graph, note, browser, and terminal boxes. Manage project tickets in a sidebar, sync folder notes and hybrid links, auto-fill frontmatter, customize the explorer, and style graph node sizes and colors.
->>>>>>> 19ea3a5800189df3c51e33ee311581a175e9e0e5
