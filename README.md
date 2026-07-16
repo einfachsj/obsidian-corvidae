@@ -60,8 +60,8 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 
 1. Bump `version` in `manifest.json` and `package.json`
 2. `git tag 2.0.2 && git push origin 2.0.2`
-3. GitHub Actions builds into `build/` and creates a draft release with those assets
-4. Publish the release — tag must match `manifest.version`
+3. GitHub Actions builds into `build/` and **publishes** a release with those assets
+4. Tag must match `manifest.version` — Obsidian installs from the release assets (`main.js`, `manifest.json`, `styles.css`), not the Source code zip
 
 ## Links
 
