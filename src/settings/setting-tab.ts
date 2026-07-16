@@ -173,7 +173,7 @@ export class CorvidaeSettingTab extends PluginSettingTab {
 			.setDesc(t("settings.folderNotes.excludedPaths.desc"))
 			.addText((text) =>
 				text
-					.setPlaceholder(".obsidian, .trash")
+					.setPlaceholder(`${this.app.vault.configDir}, .trash`)
 					.setValue(this.plugin.settings.folderNoteExcludePrefixes.join(", "))
 					.onChange(async (value) => {
 						this.plugin.settings.folderNoteExcludePrefixes = value

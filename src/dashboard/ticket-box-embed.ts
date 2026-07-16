@@ -45,7 +45,7 @@ export class DashboardTicketBoxEmbed {
 
 		this.syncTimer = window.setTimeout(() => {
 			this.syncTimer = null;
-			requestAnimationFrame(() => {
+			window.requestAnimationFrame(() => {
 				void this.sync(ticketBoxes, resolveHost);
 			});
 		}, 0);
@@ -160,7 +160,8 @@ export class DashboardTicketBoxEmbed {
 			return;
 		}
 
-		await MarkdownRenderer.renderMarkdown(
+		await MarkdownRenderer.render(
+			this.plugin.app,
 			markdown,
 			mount.contentEl,
 			file.path,

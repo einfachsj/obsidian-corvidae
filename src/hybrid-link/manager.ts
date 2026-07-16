@@ -1,5 +1,6 @@
 import { App, TAbstractFile, TFile, TFolder } from "obsidian";
 import { getFolderNoteForFolder } from "../folder-note";
+import { isRecord } from "../frontmatter/utils";
 import { LINK_PROPERTY } from "../properties/link";
 import type { CorvidaeSettings } from "../settings";
 import {
@@ -85,7 +86,10 @@ export class HybridLinkManager {
 			this.syncWritePaths.add(folderNote.path);
 			try {
 				await this.app.fileManager.processFrontMatter(folderNote, (fm) => {
-					fm[LINK_PROPERTY] = mergedLinks;
+					const data: Record<string, unknown> = isRecord(fm)
+						? fm
+						: (fm as Record<string, unknown>);
+					data[LINK_PROPERTY] = mergedLinks;
 				});
 			} finally {
 				window.setTimeout(() => {

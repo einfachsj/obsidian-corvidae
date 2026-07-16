@@ -1,5 +1,6 @@
 import { App, TFile } from "obsidian";
 import { isExcalidrawFile } from "../explorer/file-tags";
+import { isRecord } from "../frontmatter/utils";
 import type { CorvidaeSettings } from "../settings";
 
 export class NoteBootstrap {
@@ -21,24 +22,30 @@ export class NoteBootstrap {
 		if (!(target instanceof TFile)) return file;
 
 		await this.app.fileManager.processFrontMatter(target, (fm) => {
-			if (fm.aliases === undefined || fm.aliases === null) {
-				fm.aliases = [target.basename];
-			} else if (Array.isArray(fm.aliases) && fm.aliases.length === 0) {
-				fm.aliases = [target.basename];
+			const data: Record<string, unknown> = isRecord(fm) ? fm : (fm as Record<string, unknown>);
+
+			const aliases = data.aliases;
+			if (aliases === undefined || aliases === null) {
+				data.aliases = [target.basename];
+			} else if (Array.isArray(aliases) && aliases.length === 0) {
+				data.aliases = [target.basename];
 			}
 
-			if (fm.tags === undefined || fm.tags === null) {
-				fm.tags = [...this.settings.defaultTags];
+			const tags = data.tags;
+			if (tags === undefined || tags === null) {
+				data.tags = [...this.settings.defaultTags];
 			}
 
 			const sizeKey = this.settings.sizeProperty;
-			if (fm[sizeKey] === undefined || fm[sizeKey] === null || fm[sizeKey] === "") {
-				fm[sizeKey] = this.settings.defaultSize;
+			const sizeVal = data[sizeKey];
+			if (sizeVal === undefined || sizeVal === null || sizeVal === "") {
+				data[sizeKey] = this.settings.defaultSize;
 			}
 
 			const colorKey = this.settings.colorProperty;
-			if (fm[colorKey] === undefined || fm[colorKey] === null || fm[colorKey] === "") {
-				fm[colorKey] = this.settings.defaultColor;
+			const colorVal = data[colorKey];
+			if (colorVal === undefined || colorVal === null || colorVal === "") {
+				data[colorKey] = this.settings.defaultColor;
 			}
 		});
 

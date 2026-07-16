@@ -1,4 +1,8 @@
 /** Frontmatter-Farbwert (#rrggbb) in PixiJS-Zahl (0xRRGGBB) */
+export function isRecord(value: unknown): value is Record<string, unknown> {
+	return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
 export function hexToPixi(hex: string): number | null {
 	const cleaned = hex.trim().replace(/^#/, "");
 	if (!/^[0-9a-fA-F]{6}$/.test(cleaned)) return null;
@@ -44,7 +48,7 @@ export function resolveFirstAlias(
 	const aliases = frontmatter?.aliases;
 
 	if (Array.isArray(aliases) && aliases.length > 0) {
-		const first = aliases[0];
+		const first: unknown = aliases[0];
 		if (first !== undefined && first !== null && String(first).trim()) {
 			return String(first).trim();
 		}

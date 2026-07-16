@@ -15,8 +15,10 @@ import { FileExplorerAliasSortPatch } from "./file-explorer-patch";
 
 const FOLDER_CLASS = "corvidae-folder-note";
 const FILE_HIDDEN_CLASS = "corvidae-folder-note-hidden";
-const EXPLORER_TOOLBAR_SELECTOR =
-	'.workspace-leaf-content[data-type="file-explorer"] .nav-header, .workspace-leaf-content[data-type="file-explorer"] .nav-buttons-container, .nav-files-container .nav-buttons-container';
+
+function isHtmlElement(value: EventTarget | null): value is HTMLElement {
+	return value !== null && (value as Node).instanceOf?.(HTMLElement) === true;
+}
 
 export class ExplorerManager {
 	private observer: MutationObserver | null = null;
@@ -44,7 +46,6 @@ export class ExplorerManager {
 
 		this.plugin.registerEvent(
 			this.app.workspace.on("layout-change", () => {
-				this.hideExplorerToolbar();
 				this.fileExplorerPatch.tryInstallAndSort();
 				this.hideAllFolderNotes();
 				this.scheduleFolderRefresh();
@@ -107,7 +108,6 @@ export class ExplorerManager {
 		);
 
 		this.setupObserver();
-		this.hideExplorerToolbar();
 		this.fileExplorerPatch.tryInstallAndSort();
 		this.hideAllFolderNotes();
 		this.refreshExplorerUi();
@@ -145,14 +145,6 @@ export class ExplorerManager {
 		}, 50);
 	}
 
-	private hideExplorerToolbar(): void {
-		for (const el of Array.from(
-			document.querySelectorAll<HTMLElement>(EXPLORER_TOOLBAR_SELECTOR)
-		)) {
-			el.style.setProperty("display", "none", "important");
-		}
-	}
-
 	private hideEnabled(): boolean {
 		return this.settings.folderNoteEnabled && this.settings.folderNoteHideInExplorer;
 	}
@@ -167,7 +159,6 @@ export class ExplorerManager {
 			if (!container || this.observer) return;
 
 			this.observer = new MutationObserver((mutations) => {
-				this.hideExplorerToolbar();
 				if (this.hideEnabled()) {
 					for (const mutation of mutations) {
 						for (const node of Array.from(mutation.addedNodes)) {
@@ -197,7 +188,7 @@ export class ExplorerManager {
 	}
 
 	private hideFolderNotesInNode(node: Node): void {
-		if (node instanceof HTMLElement) {
+		if (node.instanceOf(HTMLElement)) {
 			if (node.matches(".nav-file-title[data-path]")) {
 				this.maybeHideTitle(node);
 			}
@@ -306,23 +297,23 @@ export class ExplorerManager {
 	}
 
 	private isFolderTitleClick(target: EventTarget | null): boolean {
-		if (!(target instanceof HTMLElement)) return false;
+		if (!isHtmlElement(target)) return false;
 		return !!target.closest(".nav-folder-title-content");
 	}
 
 	private isCollapseClick(target: EventTarget | null): boolean {
-		if (!(target instanceof HTMLElement)) return false;
+		if (!isHtmlElement(target)) return false;
 		return !!target.closest(".nav-folder-collapse-indicator");
 	}
 
 	private getFolderFromClick(target: EventTarget | null): TFolder | null {
-		if (!(target instanceof HTMLElement)) return null;
+		if (!isHtmlElement(target)) return null;
 		if (!target.closest(".nav-files-container")) return null;
 
 		const folderEl = target.closest(".nav-folder");
-		const titleEl = folderEl?.querySelector(
+		const titleEl = folderEl?.querySelector<HTMLElement>(
 			":scope > .nav-folder-title"
-		) as HTMLElement | null;
+		);
 		const folderPath = titleEl?.dataset.path;
 		if (!folderPath) return null;
 

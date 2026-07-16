@@ -27,8 +27,7 @@ export function applyBrowserScrollbarHiding(mount: EmbeddedLeafMount): void {
 	const root = getEmbeddedRootSplit(mount);
 
 	root.querySelectorAll<HTMLElement>(WRAPPER_SELECTOR).forEach((el) => {
-		el.style.setProperty("scrollbar-width", "none", "important");
-		el.style.setProperty("-ms-overflow-style", "none", "important");
+		el.addClass("corvidae-hide-native-scrollbar");
 	});
 
 	root.querySelectorAll<ElectronWebview>("webview").forEach((webview) => {

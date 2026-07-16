@@ -87,7 +87,7 @@ export const DEFAULT_SETTINGS: CorvidaeSettings = {
 	defaultColor: "#888888",
 	folderNoteEnabled: true,
 	folderNoteSyncRename: true,
-	folderNoteExcludePrefixes: [".obsidian", ".trash"],
+	folderNoteExcludePrefixes: [".trash"],
 	folderNoteOpenOnClick: true,
 	folderNoteHideInExplorer: true,
 	dashboardAutoOpen: true,

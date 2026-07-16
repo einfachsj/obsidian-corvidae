@@ -47,10 +47,11 @@ export class DashboardCrowControl {
 	}
 
 	private ensureButton(): void {
-		const actions =
+		const actionsEl =
 			document.querySelector(PROFILE_ACTIONS_SELECTOR) ??
 			document.querySelector(".workspace-sidedock-vault-profile");
-		if (!(actions instanceof HTMLElement)) return;
+		if (!actionsEl?.instanceOf(HTMLElement)) return;
+		const actions = actionsEl;
 
 		if (actions.querySelector(".corvidae-crow-profile-button")) {
 			this.button = actions.querySelector<HTMLButtonElement>(
@@ -59,16 +60,18 @@ export class DashboardCrowControl {
 			return;
 		}
 
-		const button = document.createElement("button");
-		button.type = "button";
-		button.className = "clickable-icon corvidae-crow-profile-button";
-		button.setAttribute("aria-label", t("dashboard.bar.expand"));
+		const button = actions.createEl("button", {
+			cls: "clickable-icon corvidae-crow-profile-button",
+			attr: {
+				type: "button",
+				"aria-label": t("dashboard.bar.expand"),
+			},
+		});
 		setIcon(button, DASHBOARD_TOGGLE_ICON);
 		button.addEventListener("click", () => {
 			void this.plugin.dashboardLayoutManager.toggleBar();
 		});
 
-		actions.appendChild(button);
 		this.button = button;
 	}
 }

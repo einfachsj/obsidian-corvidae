@@ -1,6 +1,6 @@
 import { App, TFile, TFolder } from "obsidian";
 import { getFolderNoteForFolder } from "../folder-note";
-import { normalizeHexColor, resolveFirstAlias } from "../frontmatter/utils";
+import { normalizeHexColor, resolveFirstAlias, isRecord } from "../frontmatter/utils";
 import type { CorvidaeSettings } from "../settings";
 
 export interface DashboardProject {
@@ -25,8 +25,11 @@ function shouldSkipPath(path: string, settings: CorvidaeSettings): boolean {
 }
 
 function readProjectMeta(app: App, file: TFile, settings: CorvidaeSettings) {
-	const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
-	const colorRaw = frontmatter?.[settings.colorProperty];
+	const cache = app.metadataCache.getFileCache(file);
+	const frontmatter = isRecord(cache?.frontmatter)
+		? (cache.frontmatter as Record<string, unknown>)
+		: undefined;
+	const colorRaw: unknown = frontmatter?.[settings.colorProperty];
 	const color = normalizeHexColor(colorRaw) ?? undefined;
 
 	return {

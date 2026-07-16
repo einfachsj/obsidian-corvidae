@@ -114,9 +114,14 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardNoteBoxEmbed.detachAll();
 		this.plugin.dashboardTerminalBoxEmbed.detachAll();
 		this.plugin.dashboardTicketBoxEmbed.detachAll();
-		this.containerEl
-			.closest(".workspace-tabs")
-			?.removeClass("corvidae-dashboard-bar-tabs");
+		const tabsEl = this.containerEl.closest(".workspace-tabs");
+		tabsEl?.removeClass("corvidae-dashboard-bar-tabs");
+		tabsEl
+			?.closest(
+				".workspace-split.mod-horizontal, .workspace-split.mod-horizontal-split"
+			)
+			?.removeClass("corvidae-dashboard-bar-split");
+		this.plugin.dashboardLayoutManager.cleanupBarSplitClasses();
 		this.dashboardEl?.empty();
 	}
 
@@ -160,7 +165,7 @@ export class CorvidaeDashboardView extends ItemView {
 
 	private syncMoveSlots(): void {
 		const grid = this.dashboardEl.querySelector(".corvidae-dashboard-box-grid");
-		if (!(grid instanceof HTMLElement)) return;
+		if (!grid?.instanceOf(HTMLElement)) return;
 
 		grid.querySelectorAll(".corvidae-dashboard-move-slot").forEach((slot) => {
 			slot.remove();
@@ -186,8 +191,19 @@ export class CorvidaeDashboardView extends ItemView {
 
 	private applyBarTabChrome(): void {
 		const tabsEl = this.containerEl.closest(".workspace-tabs");
-		if (!(tabsEl instanceof HTMLElement)) return;
-		tabsEl.toggleClass("corvidae-dashboard-bar-tabs", this.mode === "bar");
+		if (!tabsEl?.instanceOf(HTMLElement)) return;
+
+		const isBar = this.mode === "bar";
+		tabsEl.toggleClass("corvidae-dashboard-bar-tabs", isBar);
+
+		const splitEl = tabsEl.closest(
+			".workspace-split.mod-horizontal, .workspace-split.mod-horizontal-split"
+		);
+		if (splitEl?.instanceOf(HTMLElement)) {
+			splitEl.toggleClass("corvidae-dashboard-bar-split", isBar);
+		}
+
+		this.plugin.dashboardLayoutManager.cleanupBarSplitClasses();
 	}
 
 	private render(): void {
@@ -233,7 +249,7 @@ export class CorvidaeDashboardView extends ItemView {
 		this.syncBrowserBoxes(boxes);
 		this.syncTerminalBoxes(boxes);
 		this.syncTicketBoxes(boxes);
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			this.resyncGraphEmbeds();
 			this.resyncNoteEmbeds();
 			this.resyncBrowserEmbeds();
@@ -488,7 +504,7 @@ export class CorvidaeDashboardView extends ItemView {
 		this.syncBrowserBoxes(boxes);
 		this.syncTerminalBoxes(boxes);
 		this.syncTicketBoxes(boxes);
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			this.resyncGraphEmbeds();
 			this.resyncNoteEmbeds();
 			this.resyncBrowserEmbeds();
@@ -502,9 +518,9 @@ export class CorvidaeDashboardView extends ItemView {
 			boxId,
 			link,
 			(id) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-browser-host="${id}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 
@@ -535,9 +551,9 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardNoteBoxEmbed.scheduleSync(
 			noteBoxes,
 			(boxId) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-note-host="${boxId}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 
@@ -548,9 +564,9 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardGraphBoxEmbed.scheduleSync(
 			graphBoxes,
 			(boxId) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-graph-host="${boxId}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 
@@ -561,9 +577,9 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardBrowserBoxEmbed.scheduleSync(
 			browserBoxes,
 			(boxId) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-browser-host="${boxId}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 
@@ -574,9 +590,9 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardTerminalBoxEmbed.scheduleSync(
 			terminalBoxes,
 			(boxId) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-terminal-host="${boxId}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 
@@ -587,9 +603,9 @@ export class CorvidaeDashboardView extends ItemView {
 		this.plugin.dashboardTicketBoxEmbed.scheduleSync(
 			ticketBoxes,
 			(boxId) =>
-				this.dashboardEl.querySelector(
+				this.dashboardEl.querySelector<HTMLElement>(
 					`[data-ticket-host="${boxId}"]`
-				) as HTMLElement | null
+				)
 		);
 	}
 

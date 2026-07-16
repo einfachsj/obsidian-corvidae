@@ -1,11 +1,16 @@
 /* Properties in Notizen ausblenden (Frontmatter bleibt für Graph/Explorer aktiv) */
 
+.markdown-source-view.mod-cm6 .metadata-container,
 .markdown-source-view .metadata-container,
 .markdown-preview-view .metadata-container {
-	display: none !important;
+	display: none;
 }
 
 /* CORVIDAE – Graph-Legende */
+
+.corvidae-legend-host {
+	position: relative;
+}
 
 .corvidae-legend {
 	position: absolute;
@@ -66,10 +71,10 @@
 
 /* Explorer-Toolbar ausblenden (New note, Sort, …) */
 
-.workspace-leaf-content[data-type="file-explorer"] .nav-header,
-.workspace-leaf-content[data-type="file-explorer"] .nav-buttons-container,
-.nav-files-container .nav-buttons-container {
-	display: none !important;
+body .workspace-leaf-content[data-type="file-explorer"] .nav-header,
+body .workspace-leaf-content[data-type="file-explorer"] .nav-buttons-container,
+body .nav-files-container .nav-buttons-container {
+	display: none;
 }
 
 .nav-file.corvidae-folder-note-hidden {
@@ -131,13 +136,6 @@
 
 /* order/type-Badges im nativen Datei-Explorer */
 
-.nav-file-title:has(.corvidae-nav-meta),
-.nav-folder-title:has(.corvidae-nav-meta) {
-	display: flex;
-	align-items: center;
-	min-width: 0;
-}
-
 .corvidae-nav-meta {
 	display: inline-flex;
 	align-items: center;
@@ -167,24 +165,24 @@
 /* CORVIDAE Dashboard */
 
 /* Hide dashboard tab in tab strip (notes keep their tabs) */
-.workspace-tab-header[data-type="corvidae-dashboard"] {
-	display: none !important;
+body .workspace-tab-header[data-type="corvidae-dashboard"] {
+	display: none;
 }
 
 /* Hide new-tab (+) while only the full dashboard is shown */
 .workspace-tabs.corvidae-hide-new-tab .workspace-tab-header-new-tab {
-	display: none !important;
+	display: none;
 }
 
 /* Bottom dashboard bar: no tab strip */
 .workspace-tabs.corvidae-dashboard-bar-tabs > .workspace-tab-header-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	overflow: hidden !important;
-	border: none !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	border: none;
 }
 
 .workspace-tabs.corvidae-dashboard-bar-tabs > .workspace-tab-container {
@@ -193,27 +191,21 @@
 
 /* Bottom dashboard bar: fixed 250px */
 .mod-root
-	.workspace-split.mod-horizontal-split:has(.corvidae-dashboard-bar-tabs)
-	> .workspace-tabs.corvidae-dashboard-bar-tabs,
-.mod-root
-	.workspace-split.mod-horizontal:has(.corvidae-dashboard-bar-tabs)
+	.workspace-split.corvidae-dashboard-bar-split
 	> .workspace-tabs.corvidae-dashboard-bar-tabs {
-	flex-grow: 0 !important;
-	flex-shrink: 0 !important;
-	flex-basis: 250px !important;
-	height: 250px !important;
-	max-height: 250px !important;
-	min-height: 250px !important;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: 250px;
+	height: 250px;
+	max-height: 250px;
+	min-height: 250px;
 }
 
 .mod-root
-	.workspace-split.mod-horizontal-split:has(.corvidae-dashboard-bar-tabs)
-	> .workspace-tabs:not(.corvidae-dashboard-bar-tabs),
-.mod-root
-	.workspace-split.mod-horizontal:has(.corvidae-dashboard-bar-tabs)
+	.workspace-split.corvidae-dashboard-bar-split
 	> .workspace-tabs:not(.corvidae-dashboard-bar-tabs) {
-	flex: 1 1 auto !important;
-	min-height: 0 !important;
+	flex: 1 1 auto;
+	min-height: 0;
 }
 
 .corvidae-dashboard-view--bar {
@@ -491,16 +483,17 @@
 }
 
 .corvidae-box-graph-workspace {
+	width: 100%;
 	height: 100%;
 	min-height: 0;
 	overflow: hidden;
 }
 
 .corvidae-box-graph-workspace .workspace-tab-header-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	overflow: hidden !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .corvidae-box-graph-workspace .workspace-tabs {
@@ -512,8 +505,8 @@
 }
 
 .corvidae-box-graph-workspace .workspace-leaf {
-	height: 100% !important;
-	width: 100% !important;
+	height: 100%;
+	width: 100%;
 	min-height: 0;
 }
 
@@ -529,7 +522,7 @@
 
 .corvidae-box-graph-workspace .view-header,
 .corvidae-box-graph-workspace .view-header-title {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-graph-workspace .graph-view {
@@ -552,13 +545,13 @@
 /* Dashboard embeds: hide toolbars/overlays */
 .corvidae-dashboard-view .corvidae-box-graph-workspace .graph-controls,
 .corvidae-dashboard-view .corvidae-box-graph-workspace .corvidae-legend {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .App-toolbar,
 .corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .tray-misc-tools-container,
 .corvidae-dashboard-view .corvidae-box-note-workspace .excalidraw .Island {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-graph-host {
@@ -576,10 +569,10 @@
 }
 
 .corvidae-box-note-workspace .workspace-tab-header-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	overflow: hidden !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .corvidae-box-note-workspace .workspace-tabs {
@@ -591,8 +584,8 @@
 }
 
 .corvidae-box-note-workspace .workspace-leaf {
-	height: 100% !important;
-	width: 100% !important;
+	height: 100%;
+	width: 100%;
 	min-height: 0;
 }
 
@@ -608,7 +601,7 @@
 
 .corvidae-box-note-workspace .view-header,
 .corvidae-box-note-workspace .view-header-title {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view,
@@ -617,7 +610,7 @@
 }
 
 .corvidae-box-note-workspace .markdown-preview-view {
-	padding: 15px 30px !important;
+	padding: 15px 30px;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view .markdown-preview-sizer {
@@ -626,15 +619,15 @@
 }
 
 .corvidae-box-note-workspace .inline-title {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view .metadata-container {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view hr:first-of-type {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-note-workspace .view-content,
@@ -686,10 +679,10 @@
 }
 
 .corvidae-box-terminal-workspace .workspace-tab-header-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	overflow: hidden !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .corvidae-box-terminal-workspace .workspace-tabs {
@@ -701,8 +694,8 @@
 }
 
 .corvidae-box-terminal-workspace .workspace-leaf {
-	height: 100% !important;
-	width: 100% !important;
+	height: 100%;
+	width: 100%;
 	min-height: 0;
 }
 
@@ -718,7 +711,7 @@
 
 .corvidae-box-terminal-workspace .view-header,
 .corvidae-box-terminal-workspace .view-header-title {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-terminal-workspace .view-content {
@@ -763,10 +756,10 @@
 }
 
 .corvidae-box-browser-workspace .workspace-tab-header-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	overflow: hidden !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .corvidae-box-browser-workspace .workspace-tabs,
@@ -775,8 +768,8 @@
 }
 
 .corvidae-box-browser-workspace .workspace-leaf {
-	height: 100% !important;
-	width: 100% !important;
+	height: 100%;
+	width: 100%;
 	min-height: 0;
 }
 
@@ -794,18 +787,18 @@
 .corvidae-box-browser-workspace .view-header.view-header-always-show,
 .corvidae-box-browser-workspace .view-header-title,
 .corvidae-box-browser-workspace .view-header-title-container {
-	display: none !important;
-	height: 0 !important;
-	min-height: 0 !important;
-	overflow: hidden !important;
-	border-bottom: 0 !important;
-	opacity: 0 !important;
-	padding: 0 !important;
-	margin: 0 !important;
+	display: none;
+	height: 0;
+	min-height: 0;
+	overflow: hidden;
+	border-bottom: 0;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
 }
 
 .corvidae-dashboard-view .corvidae-box-browser-workspace .view-content {
-	padding-top: 0 !important;
+	padding-top: 0;
 }
 
 .corvidae-dashboard-view .corvidae-box-browser-host,
@@ -817,16 +810,21 @@
 .corvidae-dashboard-view .corvidae-box-browser-workspace .workspace-leaf-content,
 .corvidae-dashboard-view .corvidae-box-browser-workspace .view-content,
 .corvidae-dashboard-view .corvidae-box-browser-workspace .webviewer-content {
-	scrollbar-width: none !important;
-	-ms-overflow-style: none !important;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
 .corvidae-dashboard-view .corvidae-box-browser-host::-webkit-scrollbar,
 .corvidae-dashboard-view .corvidae-box-browser-workspace::-webkit-scrollbar,
 .corvidae-dashboard-view .corvidae-box-browser-workspace *::-webkit-scrollbar {
-	display: none !important;
-	width: 0 !important;
-	height: 0 !important;
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.corvidae-hide-native-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
 .corvidae-box-browser-host {

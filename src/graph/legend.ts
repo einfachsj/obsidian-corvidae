@@ -7,6 +7,20 @@ import type { GraphViewLike, WorkspaceLeafLike } from "./types";
 
 const LEGEND_CLASS = "corvidae-legend";
 
+function asGraphView(view: unknown): GraphViewLike | null {
+	if (!view || typeof view !== "object") return null;
+	if (!("containerEl" in view)) return null;
+	const containerEl = (view as { containerEl: unknown }).containerEl;
+	if (
+		!containerEl ||
+		typeof containerEl !== "object" ||
+		!(containerEl as Node).instanceOf?.(HTMLElement)
+	) {
+		return null;
+	}
+	return view as GraphViewLike;
+}
+
 export class LegendManager {
 	constructor(private settings: CorvidaeSettings) {}
 
@@ -16,8 +30,8 @@ export class LegendManager {
 
 	syncLegends(graphLeaves: WorkspaceLeafLike[], entries: LegendEntry[]): void {
 		for (const leaf of graphLeaves) {
-			const view = leaf.view as unknown as GraphViewLike;
-			if (!view?.containerEl) continue;
+			const view = asGraphView(leaf.view);
+			if (!view) continue;
 
 			view.containerEl.querySelector(`.${LEGEND_CLASS}`)?.remove();
 
@@ -26,9 +40,7 @@ export class LegendManager {
 			if (!this.settings.showLegend || entries.length === 0) continue;
 
 			const container = view.containerEl;
-			if (getComputedStyle(container).position === "static") {
-				container.style.position = "relative";
-			}
+			container.addClass("corvidae-legend-host");
 
 			const legend = container.createDiv({ cls: LEGEND_CLASS });
 			legend.createDiv({ cls: "corvidae-legend-title", text: t("legend.title") });
@@ -47,7 +59,7 @@ export class LegendManager {
 
 	removeAll(graphLeaves: WorkspaceLeafLike[]): void {
 		for (const leaf of graphLeaves) {
-			const view = leaf.view as unknown as GraphViewLike;
+			const view = asGraphView(leaf.view);
 			view?.containerEl?.querySelector(`.${LEGEND_CLASS}`)?.remove();
 		}
 	}

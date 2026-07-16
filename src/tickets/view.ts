@@ -34,7 +34,7 @@ export class CorvidaeTicketsView extends ItemView {
 			cls: "corvidae-tickets-content",
 		});
 		this.render();
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			this.containerEl
 				.closest(".workspace-tabs")
 				?.addClass("corvidae-tickets-sidebar-bottom");

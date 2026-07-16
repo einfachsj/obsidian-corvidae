@@ -138,7 +138,7 @@ export class GraphPatcher {
 		const aliases = frontmatter?.aliases;
 
 		if (Array.isArray(aliases) && aliases.length > 0) {
-			const first = aliases[0];
+			const first: unknown = aliases[0];
 			if (first !== undefined && first !== null && String(first).trim()) {
 				return String(first);
 			}

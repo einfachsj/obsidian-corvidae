@@ -129,7 +129,7 @@ export class DashboardBrowserBoxEmbed {
 		await entry.mount.leaf.loadIfDeferred();
 		entry.mount.leaf.onResize();
 		applyBrowserScrollbarHiding(entry.mount);
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			applyBrowserScrollbarHiding(entry.mount);
 		});
 	}

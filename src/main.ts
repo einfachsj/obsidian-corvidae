@@ -18,6 +18,7 @@ import {
 } from "./dashboard";
 import { ExplorerManager } from "./explorer";
 import { FolderNoteCreateUI, FolderNoteManager } from "./folder-note";
+import { isRecord } from "./frontmatter/utils";
 import { GraphPatcher, LegendManager } from "./graph";
 import { HybridLinkManager } from "./hybrid-link";
 import { initI18n, t } from "./i18n";
@@ -394,7 +395,8 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	async saveSettings(): Promise<void> {
-		const existing = (await this.loadData()) ?? {};
+		const raw = await this.loadData();
+		const existing = isRecord(raw) ? raw : {};
 		await this.saveData({
 			...existing,
 			...this.settings,
@@ -412,17 +414,28 @@ export default class CorvidaePlugin extends Plugin {
 
 	private async loadSettings(): Promise<void> {
 		const data = await this.loadData();
-		const { dashboardBoxes: _dashboardBoxes, ...settingsData } = (data ??
-			{}) as Record<string, unknown>;
-		this.settings = { ...DEFAULT_SETTINGS, ...settingsData };
+		const rawData = isRecord(data) ? data : {};
+		const { dashboardBoxes: _dashboardBoxes, ...settingsData } = rawData;
+		const hadExcludePrefixes = Array.isArray(
+			settingsData.folderNoteExcludePrefixes
+		);
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			settingsData
+		) as CorvidaeSettings;
 
 		if (!Array.isArray(this.settings.defaultTags)) {
 			this.settings.defaultTags = [];
 		}
-		if (!Array.isArray(this.settings.folderNoteExcludePrefixes)) {
-			this.settings.folderNoteExcludePrefixes = [
-				...DEFAULT_SETTINGS.folderNoteExcludePrefixes,
-			];
+		const configDir = this.app.vault.configDir;
+		if (!hadExcludePrefixes || !Array.isArray(this.settings.folderNoteExcludePrefixes)) {
+			this.settings.folderNoteExcludePrefixes = [configDir, ".trash"];
+		} else {
+			this.settings.folderNoteExcludePrefixes =
+				this.settings.folderNoteExcludePrefixes
+					.filter((p): p is string => typeof p === "string")
+					.map((p) => (p === ".obsidian" ? configDir : p));
 		}
 		if (typeof this.settings.showLegend !== "boolean") {
 			this.settings.showLegend = DEFAULT_SETTINGS.showLegend;

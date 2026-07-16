@@ -6,7 +6,7 @@ import type { App } from "obsidian";
 import { t } from "../i18n";
 import type { CorvidaeSettings } from "../settings";
 import { registerLinkPropertyType } from "./link";
-import type { MetadataTypeManagerLike, PropertyWidgetLike } from "./shared";
+import type { MetadataTypeManagerLike } from "./shared";
 
 const GRAPH_TYPE = "graph";
 

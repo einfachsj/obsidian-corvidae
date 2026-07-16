@@ -1,6 +1,6 @@
 # CORVIDAE
 
-**v2.0.2** · Obsidian plugin by [ein.ink](https://ein.ink)
+**v2.0.3** · Obsidian plugin by [ein.ink](https://ein.ink)
 
 Configure a modular dashboard for your vault — graph, notes, websites, and terminals in one workspace, plus project tickets, folder notes, and graph styling tools.
 
@@ -59,7 +59,7 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 ## GitHub Release
 
 1. Bump `version` in `manifest.json` and `package.json`
-2. `git tag 2.0.2 && git push origin 2.0.2`
+2. `git tag 2.0.3 && git push origin 2.0.3`
 3. GitHub Actions builds into `build/` and **publishes** a release with those assets
 4. Tag must match `manifest.version` — Obsidian installs from the release assets (`main.js`, `manifest.json`, `styles.css`), not the Source code zip
 

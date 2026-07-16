@@ -1,4 +1,5 @@
 import type CorvidaePlugin from "../main";
+import { isRecord } from "../frontmatter/utils";
 import {
 	DASHBOARD_GRID_COLUMNS,
 	MAX_BOX_ROWS,
@@ -297,7 +298,8 @@ export class DashboardBoxStore {
 	}
 
 	async persist(): Promise<void> {
-		const existing = (await this.plugin.loadData()) ?? {};
+		const raw = await this.plugin.loadData();
+		const existing = isRecord(raw) ? raw : {};
 		await this.plugin.saveData({
 			...existing,
 			...this.plugin.settings,

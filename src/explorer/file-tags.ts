@@ -36,8 +36,8 @@ export function isExcalidrawFile(app: App, file: TFile): boolean {
 
 	if (frontmatter["excalidraw-plugin"] !== undefined) return true;
 
-	const tags = frontmatter.tags;
-	if (Array.isArray(tags) && tags.some((t) => String(t).toLowerCase() === "excalidraw")) {
+	const tags: unknown = frontmatter.tags;
+	if (Array.isArray(tags) && tags.some((t: unknown) => String(t).toLowerCase() === "excalidraw")) {
 		return true;
 	}
 	if (typeof tags === "string" && tags.toLowerCase().includes("excalidraw")) {

@@ -9,7 +9,6 @@ import { t } from "../i18n";
 import type { CorvidaeSettings } from "../settings";
 import {
 	folderPathFromNotePath,
-	getFolderNoteForFolder,
 	isFolderNotePath,
 	notePathForFolder,
 	resolveUniqueFolderNotePath,
@@ -122,7 +121,7 @@ export class FolderNoteManager {
 				}
 
 				if (file.path !== existing.path) {
-					await this.app.vault.delete(file);
+					await this.app.fileManager.trashFile(file);
 				}
 			} catch {
 				return existing;

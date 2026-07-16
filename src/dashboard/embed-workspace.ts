@@ -49,8 +49,6 @@ export function createEmbeddedLeaf(
 	rootSplit.getContainer = () => workspace.rootSplit;
 
 	const { containerEl } = rootSplit;
-	containerEl.style.width = "100%";
-	containerEl.style.height = "100%";
 	containerEl.addClass(workspaceClass);
 
 	host.empty();

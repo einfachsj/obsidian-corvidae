@@ -50,7 +50,7 @@ export async function activateTicketsSidebar(app: App): Promise<void> {
 
 	dedupeRightSidebarTicketLeaves(workspace, rightSplit, ticketsLeaf);
 	applySidebarTicketsSplitDimensions(ticketsLeaf);
-	requestAnimationFrame(() => {
+	window.requestAnimationFrame(() => {
 		applySidebarTicketsSplitDimensions(ticketsLeaf);
 	});
 	await workspace.revealLeaf(ticketsLeaf);

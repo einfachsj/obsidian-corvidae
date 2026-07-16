@@ -34,6 +34,7 @@ export class DashboardLayoutManager {
 			for (const leaf of this.findBarLeavesInMain()) {
 				leaf.detach();
 			}
+			this.cleanupBarSplitClasses();
 		} else {
 			this.barSuppressedByUser = false;
 			const contentLeaf = this.findMainContentLeaf();
@@ -86,6 +87,7 @@ export class DashboardLayoutManager {
 					for (const leaf of this.findBarLeavesInMain()) {
 						leaf.detach();
 					}
+					this.cleanupBarSplitClasses();
 				} else {
 					await this.ensureSplitWithBar(contentLeaf);
 					const barLeaf = this.findBarLeafForContent(contentLeaf);
@@ -110,7 +112,7 @@ export class DashboardLayoutManager {
 		const tabGroups = document.querySelectorAll(".mod-root .workspace-tabs");
 		for (let i = 0; i < tabGroups.length; i++) {
 			const tabsEl = tabGroups.item(i);
-			if (!(tabsEl instanceof HTMLElement)) continue;
+			if (!tabsEl?.instanceOf(HTMLElement)) continue;
 			if (tabsEl.classList.contains("corvidae-dashboard-bar-tabs")) continue;
 
 			const hasFullDashboard =
@@ -125,6 +127,19 @@ export class DashboardLayoutManager {
 				hasFullDashboard && !hasOtherTabs
 			);
 		}
+
+		this.cleanupBarSplitClasses();
+	}
+
+	/** Remove bar-split markers that no longer contain a bar tabs child. */
+	cleanupBarSplitClasses(): void {
+		document
+			.querySelectorAll(".corvidae-dashboard-bar-split")
+			.forEach((el) => {
+				if (!el.instanceOf(HTMLElement)) return;
+				if (el.querySelector(".corvidae-dashboard-bar-tabs")) return;
+				el.removeClass("corvidae-dashboard-bar-split");
+			});
 	}
 
 	private async collapseToFull(): Promise<void> {
@@ -133,6 +148,7 @@ export class DashboardLayoutManager {
 		for (const leaf of this.findBarLeavesInMain()) {
 			leaf.detach();
 		}
+		this.cleanupBarSplitClasses();
 
 		this.dedupeFullDashboardsInMain();
 
@@ -164,7 +180,9 @@ export class DashboardLayoutManager {
 
 		if (fullLeaves.length <= 1) return;
 
-		const keep = this.app.workspace.activeLeaf ?? fullLeaves[0];
+		const recent = this.app.workspace.getMostRecentLeaf();
+		const keep =
+			fullLeaves.find((leaf) => leaf === recent) ?? fullLeaves[0];
 		for (const leaf of fullLeaves) {
 			if (leaf !== keep) {
 				leaf.detach();
@@ -199,7 +217,7 @@ export class DashboardLayoutManager {
 
 		this.removeStrayFullDashboardsInMain(contentLeaf, barLeaf);
 		this.applyBarSplitDimensions(barLeaf);
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			this.applyBarSplitDimensions(barLeaf);
 		});
 	}
@@ -243,9 +261,9 @@ export class DashboardLayoutManager {
 	}
 
 	private findMainContentLeaf(): WorkspaceLeaf | null {
-		const active = this.app.workspace.activeLeaf;
-		if (active && this.isMainAreaLeaf(active) && this.isContentLeaf(active)) {
-			return active;
+		const recent = this.app.workspace.getMostRecentLeaf();
+		if (recent && this.isMainAreaLeaf(recent) && this.isContentLeaf(recent)) {
+			return recent;
 		}
 
 		let found: WorkspaceLeaf | null = null;
@@ -305,9 +323,9 @@ export class DashboardLayoutManager {
 	}
 
 	private getMainTargetLeaf(): WorkspaceLeaf | null {
-		const active = this.app.workspace.activeLeaf;
-		if (active && this.isMainAreaLeaf(active)) {
-			return active;
+		const recent = this.app.workspace.getMostRecentLeaf();
+		if (recent && this.isMainAreaLeaf(recent)) {
+			return recent;
 		}
 
 		let found: WorkspaceLeaf | null = null;

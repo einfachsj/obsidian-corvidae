@@ -6,7 +6,7 @@ export const WEB_VIEWER_VIEW_TYPE = "webviewer";
 
 interface AppWithInternalPlugins extends App {
 	internalPlugins?: {
-		getEnabledPluginById(id: string): unknown | null;
+		getEnabledPluginById(id: string): object | null;
 		config?: Record<string, boolean>;
 	};
 }

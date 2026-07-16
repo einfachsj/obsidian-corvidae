@@ -1,4 +1,4 @@
-import { App, TFile, TFolder, WorkspaceLeaf } from "obsidian";
+import { App, TFolder, WorkspaceLeaf } from "obsidian";
 import { isFolderNotePath } from "../folder-note";
 import { compareExplorerPaths } from "./sort";
 
@@ -36,7 +36,10 @@ export class FileExplorerAliasSortPatch {
 
 		const proto = Object.getPrototypeOf(leaf.view) as FileExplorerViewLike &
 			Record<symbol, GetSortedFolderItemsFn>;
-		const original = proto.getSortedFolderItems;
+		const original = Reflect.get(
+			proto,
+			"getSortedFolderItems"
+		) as GetSortedFolderItemsFn | undefined;
 		if (typeof original !== "function" || ORIGINAL_METHOD in proto) {
 			return false;
 		}
@@ -49,7 +52,7 @@ export class FileExplorerAliasSortPatch {
 			this: FileExplorerViewLike,
 			folder: TFolder
 		): FileExplorerItem[] {
-			const items = original.call(this, folder) ?? [];
+			const items = proto[ORIGINAL_METHOD].call(this, folder) ?? [];
 			const filtered = items.filter((item) => {
 				const path = item?.file?.path;
 				if (!path) return true;
