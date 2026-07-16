@@ -1,6 +1,6 @@
 {
 	"name": "corvidae",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "CORVIDAE Obsidian Plugin von ein.ink",
 	"main": "main.js",
 	"type": "module",

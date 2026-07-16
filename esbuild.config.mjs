@@ -20,12 +20,10 @@ const releaseDir = resolve(rootDir, "build");
 const outDir = isRelease ? releaseDir : deployDir;
 const outfile = resolve(outDir, "main.js");
 
-const assetDir = resolve(rootDir, "src");
-
 function copyAssets(targetDir) {
 	mkdirSync(targetDir, { recursive: true });
 	copyFileSync(resolve(rootDir, "manifest.json"), resolve(targetDir, "manifest.json"));
-	copyFileSync(resolve(assetDir, "styles.css"), resolve(targetDir, "styles.css"));
+	copyFileSync(resolve(rootDir, "styles.css"), resolve(targetDir, "styles.css"));
 }
 
 const context = await esbuild.context({

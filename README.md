@@ -1,6 +1,6 @@
 # CORVIDAE
 
-**v2.0.0** · Obsidian plugin by [ein.ink](https://ein.ink)
+**v2.0.1** · Obsidian plugin by [ein.ink](https://ein.ink)
 
 Configure a modular dashboard for your vault — graph, notes, websites, and terminals in one workspace, plus project tickets, folder notes, and graph styling tools.
 
@@ -34,7 +34,7 @@ Install only these files into `<vault>/.obsidian/plugins/corvidae/`:
 
 - `main.js` (built)
 - `manifest.json` (repo root)
-- `styles.css` (from `src/`)
+- `styles.css` (repo root)
 
 ## Development
 
@@ -59,7 +59,7 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 ## GitHub Release
 
 1. Bump `version` in `manifest.json` and `package.json`
-2. `git tag 2.0.0 && git push origin 2.0.0`
+2. `git tag 2.0.1 && git push origin 2.0.1`
 3. GitHub Actions builds into `build/` and creates a draft release with those assets
 4. Publish the release — tag must match `manifest.version`
 
@@ -67,10 +67,8 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 
 - Author: [ein.ink](https://ein.ink)
 - Plugin site: [plugin.corvidae.app](https://plugin.corvidae.app)
+- Repository: [github.com/einfachsj/obsidian-corvidae](https://github.com/einfachsj/obsidian-corvidae)
 
 ## License
 
 MIT — see [LICENSE](LICENSE)
-=======
-# obsidian-corvidae
-Configure a modular Obsidian dashboard with graph, note, browser, and terminal boxes. Manage project tickets in a sidebar, sync folder notes and hybrid links, auto-fill frontmatter, customize the explorer, and style graph node sizes and colors.
