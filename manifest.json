@@ -1,8 +1,8 @@
 {
 	"id": "corvidae",
 	"name": "Corvidae",
-	"version": "2.0.7",
-	"minAppVersion": "1.12.7",
+	"version": "2.0.8",
+	"minAppVersion": "1.13.0",
 	"description": "Modular dashboard with graph, note, browser, and terminal boxes. Tickets, folder notes, hybrid links, auto-frontmatter, explorer tools, graph styling, and custom code graphs.",
 	"author": "ein.ink",
 	"authorUrl": "https://ein.ink",
