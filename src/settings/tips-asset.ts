@@ -1,38 +1,30 @@
-import type { App } from "obsidian";
-import type CorvidaePlugin from "../main";
+import type { App, TFile } from "obsidian";
+import { TIPS_MARKDOWN, TIPS_VAULT_PATH } from "./tips-content";
 
-export const TIPS_FILE = "CORVIDAE PLUGIN.md";
-const TIPS_SOURCE_FALLBACK = `ORGANISATION/CORVIDAE PLUGIN/${TIPS_FILE}`;
+export { TIPS_MARKDOWN, TIPS_VAULT_PATH };
 
-export function getTipsAssetPath(plugin: CorvidaePlugin): string | null {
-	const pluginDir = plugin.manifest.dir;
-	if (!pluginDir) return null;
-	return `${pluginDir}/${TIPS_FILE}`;
+export function getTipsMarkdown(): string {
+	return TIPS_MARKDOWN;
 }
 
-export async function readTipsContent(
-	app: App,
-	plugin: CorvidaePlugin
-): Promise<string | null> {
-	const assetPath = getTipsAssetPath(plugin);
-	if (assetPath) {
-		try {
-			if (await app.vault.adapter.exists(assetPath)) {
-				return await app.vault.adapter.read(assetPath);
-			}
-		} catch {
-			/* fall through */
+/**
+ * Create or update vault-root CORVIDAE.md from the bundled tips markdown.
+ */
+export async function ensureTipsNote(app: App): Promise<TFile | null> {
+	const content = getTipsMarkdown();
+	const existing = app.vault.getFileByPath(TIPS_VAULT_PATH);
+	if (existing) {
+		const current = await app.vault.read(existing);
+		if (current !== content) {
+			await app.vault.modify(existing, content);
 		}
+		return existing;
 	}
 
-	const fallback = app.vault.getFileByPath(TIPS_SOURCE_FALLBACK);
-	if (fallback) {
-		try {
-			return await app.vault.read(fallback);
-		} catch {
-			return null;
-		}
+	try {
+		return await app.vault.create(TIPS_VAULT_PATH, content);
+	} catch {
+		const again = app.vault.getFileByPath(TIPS_VAULT_PATH);
+		return again;
 	}
-
-	return null;
 }

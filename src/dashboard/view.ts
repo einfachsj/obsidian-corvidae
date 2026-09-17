@@ -9,6 +9,7 @@ import { t } from "../i18n";
 import type CorvidaePlugin from "../main";
 import type { CorvidaeSettings } from "../settings";
 import { openTipsNote } from "../settings/open-tips-note";
+import { mountCrowIcon } from "./crow-icon";
 import {
 	getBarBoxWidthPx,
 	DASHBOARD_GRID_COLUMNS,
@@ -317,8 +318,8 @@ export class CorvidaeDashboardView extends ItemView {
 		const actions = toolbar.createDiv({ cls: "corvidae-dashboard-toolbar-actions" });
 		const crowLink = actions.createSpan({
 			cls: "corvidae-dashboard-crow-link",
-			text: "🐦‍⬛",
 		});
+		mountCrowIcon(crowLink);
 		crowLink.setAttribute("role", "button");
 		crowLink.setAttribute("tabindex", "0");
 		crowLink.setAttribute("aria-label", t("dashboard.crow.link"));

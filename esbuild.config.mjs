@@ -24,13 +24,6 @@ function copyAssets(targetDir) {
 	mkdirSync(targetDir, { recursive: true });
 	copyFileSync(resolve(rootDir, "manifest.json"), resolve(targetDir, "manifest.json"));
 	copyFileSync(resolve(rootDir, "styles.css"), resolve(targetDir, "styles.css"));
-	// Tips note opened from Settings → Description & tips
-	const tipsSrc = resolve(rootDir, "../../CORVIDAE PLUGIN.md");
-	try {
-		copyFileSync(tipsSrc, resolve(targetDir, "CORVIDAE PLUGIN.md"));
-	} catch (err) {
-		console.warn("Could not copy tips note:", err?.message || err);
-	}
 }
 
 const context = await esbuild.context({

@@ -1,6 +1,6 @@
 # CORVIDAE
 
-**v2.0.8** · Obsidian plugin by [ein.ink](https://ein.ink)
+**v2.0.9** · Obsidian plugin by [ein.ink](https://ein.ink)
 
 Configure a modular dashboard for your vault — graph, notes, websites, and terminals in one workspace, plus tickets, folder notes, graph styling, custom code graphs, and reading-view helpers.
 
@@ -18,7 +18,7 @@ Configure a modular dashboard for your vault — graph, notes, websites, and ter
 - **Callout links** — Favicons on external callout links; click a heading to open section URLs
 - **HTML code blocks** — Sandboxed `html` embeds with auto height
 - **Table formulas** — Reading-view formulas, euro formatting, merges, and side-by-side tables
-- **Tips note** — Open built-in tips from settings
+- **Tips note** — Bundled tips generate/update vault-root `CORVIDAE.md` from Settings or the dashboard crow
 
 ## Requirements
 
@@ -65,7 +65,7 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 ## GitHub Release
 
 1. Bump `version` in `manifest.json` and `package.json`
-2. `git tag 2.0.8 && git push origin 2.0.8`
+2. `git tag 2.0.9 && git push origin 2.0.9`
 3. GitHub Actions builds into `build/` and **publishes** a release with those assets
 4. Tag must match `manifest.version` — Obsidian installs from the release assets (`main.js`, `manifest.json`, `styles.css`), not the Source code zip
 

@@ -37,8 +37,6 @@ import {
 	CorvidaeSettingTab,
 	DEFAULT_SETTINGS,
 	type CorvidaeSettings,
-	CORVIDAE_TIPS_VIEW,
-	CorvidaeTipsView,
 } from "./settings";
 import {
 	activateTicketsSidebar,
@@ -107,11 +105,6 @@ export default class CorvidaePlugin extends Plugin {
 		this.registerView(
 			CORVIDAE_TICKETS_VIEW,
 			(leaf) => new CorvidaeTicketsView(leaf, this)
-		);
-
-		this.registerView(
-			CORVIDAE_TIPS_VIEW,
-			(leaf) => new CorvidaeTipsView(leaf, this)
 		);
 
 		this.registerView(

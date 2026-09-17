@@ -512,10 +512,20 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 }
 
 .corvidae-dashboard-crow-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 	font-size: 2rem;
 	line-height: 1;
 	user-select: none;
+	color: var(--text-normal);
+}
+
+.corvidae-dashboard-crow-link .corvidae-crow-icon {
+	display: block;
+	width: 1em;
+	height: 1em;
 }
 
 .corvidae-dashboard-crow-link:hover {
