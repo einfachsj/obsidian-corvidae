@@ -1,8 +1,9 @@
 /**
  * Sync vault tips markdown into a TypeScript module for bundling.
- * Source of truth: ORGANISATION/CORVIDAE PLUGIN/CORVIDAE PLUGIN.md
+ * Source of truth (local vault): ORGANISATION/CORVIDAE PLUGIN/CORVIDAE PLUGIN.md
+ * In CI the source is absent — keep the committed tips-content.ts.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -53,6 +54,19 @@ function toTsModule(markdown) {
 const version = JSON.parse(
 	readFileSync(resolve(pluginRoot, "manifest.json"), "utf8")
 ).version;
+
+if (!existsSync(sourceMd)) {
+	if (!existsSync(outTs)) {
+		console.error(
+			"Missing tips source and src/settings/tips-content.ts — cannot build."
+		);
+		process.exit(1);
+	}
+	console.log(
+		"Source CORVIDAE PLUGIN.md not found (CI) — keeping committed tips-content.ts"
+	);
+	process.exit(0);
+}
 
 let source = readFileSync(sourceMd, "utf8");
 const updatedSource = transformTipsMarkdown(source, version);
