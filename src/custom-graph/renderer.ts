@@ -26,10 +26,6 @@ function clearEl(el: Element): void {
 	while (el.firstChild) el.removeChild(el.firstChild);
 }
 
-function setClass(el: Element, className: string): void {
-	el.setAttribute("class", className);
-}
-
 function nodeRadius(kind: DevGraphNode["kind"]): number {
 	if (kind === "folder") return 10;
 	if (kind === "function") return 4;
@@ -74,23 +70,19 @@ export class HierarchyRenderer {
 		this.host.empty();
 		this.host.addClass("corvidae-custom-graph-canvas-host");
 
-		this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-		setClass(this.svg, "corvidae-custom-graph-svg");
-		this.svg.setAttribute("width", "100%");
-		this.svg.setAttribute("height", "100%");
-
-		this.viewport = document.createElementNS("http://www.w3.org/2000/svg", "g");
-		setClass(this.viewport, "corvidae-custom-graph-viewport");
-
-		this.gEdges = document.createElementNS("http://www.w3.org/2000/svg", "g");
-		setClass(this.gEdges, "corvidae-custom-graph-edges");
-		this.gNodes = document.createElementNS("http://www.w3.org/2000/svg", "g");
-		setClass(this.gNodes, "corvidae-custom-graph-nodes");
-
-		this.viewport.appendChild(this.gEdges);
-		this.viewport.appendChild(this.gNodes);
-		this.svg.appendChild(this.viewport);
-		this.host.appendChild(this.svg);
+		this.svg = this.host.createSvg("svg", {
+			cls: "corvidae-custom-graph-svg",
+			attr: { width: "100%", height: "100%" },
+		});
+		this.viewport = this.svg.createSvg("g", {
+			cls: "corvidae-custom-graph-viewport",
+		});
+		this.gEdges = this.viewport.createSvg("g", {
+			cls: "corvidae-custom-graph-edges",
+		});
+		this.gNodes = this.viewport.createSvg("g", {
+			cls: "corvidae-custom-graph-nodes",
+		});
 
 		this.bindInput();
 		this.resize();
@@ -351,52 +343,44 @@ export class HierarchyRenderer {
 		this.nodeEls.clear();
 
 		for (const edge of [...this.structuralEdges, ...this.functionEdges]) {
-			const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 			const isFn =
 				this.byId.get(edge.source)?.kind === "function" ||
 				this.byId.get(edge.target)?.kind === "function";
-			setClass(
-				line,
-				isFn
+			const line = this.gEdges.createSvg("line", {
+				cls: isFn
 					? "corvidae-custom-graph-edge is-function"
-					: "corvidae-custom-graph-edge"
-			);
+					: "corvidae-custom-graph-edge",
+			});
 			const key = `${edge.source}\0${edge.target}`;
 			line.dataset.source = edge.source;
 			line.dataset.target = edge.target;
-			this.gEdges.appendChild(line);
 			this.edgeEls.set(key, line);
 		}
 
 		for (const node of [...this.structural, ...this.functions]) {
-			const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-			setClass(g, `corvidae-custom-graph-node is-${node.kind}`);
+			const g = this.gNodes.createSvg("g", {
+				cls: `corvidae-custom-graph-node is-${node.kind}`,
+			});
 			g.dataset.id = node.id;
 
-			const circle = document.createElementNS(
-				"http://www.w3.org/2000/svg",
-				"circle"
-			);
-			circle.setAttribute("r", String(nodeRadius(node.kind)));
-			setClass(circle, "corvidae-custom-graph-node-circle");
+			g.createSvg("circle", {
+				cls: "corvidae-custom-graph-node-circle",
+				attr: { r: String(nodeRadius(node.kind)) },
+			});
 
-			const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-			setClass(text, "corvidae-custom-graph-node-label");
-			text.setAttribute("x", String(nodeRadius(node.kind) + 4));
-			text.setAttribute("y", "4");
+			const text = g.createSvg("text", {
+				cls: "corvidae-custom-graph-node-label",
+				attr: {
+					x: String(nodeRadius(node.kind) + 4),
+					y: "4",
+				},
+			});
 			text.textContent = node.label;
-
-			g.appendChild(circle);
-			g.appendChild(text);
 
 			if (node.kind === "function") {
 				g.setAttribute("aria-label", node.label);
-				const title = document.createElementNS(
-					"http://www.w3.org/2000/svg",
-					"title"
-				);
+				const title = g.createSvg("title");
 				title.textContent = node.label;
-				g.appendChild(title);
 			}
 
 			g.addEventListener("pointerdown", (event) => {
@@ -416,7 +400,6 @@ export class HierarchyRenderer {
 				this.options.onNodeClick?.(node);
 			});
 
-			this.gNodes.appendChild(g);
 			this.nodeEls.set(node.id, g);
 		}
 	}
@@ -435,14 +418,14 @@ export class HierarchyRenderer {
 				this.placeFunctions();
 				this.paint();
 				if (this.settleLeft > 0) this.settleLeft -= 1;
-				this.raf = requestAnimationFrame(tick);
+				this.raf = window.requestAnimationFrame(tick);
 			} else {
 				this.raf = 0;
 				this.pinRoot();
 				this.paint();
 			}
 		};
-		this.raf = requestAnimationFrame(tick);
+		this.raf = window.requestAnimationFrame(tick);
 	}
 
 	private step(): void {

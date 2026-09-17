@@ -8,10 +8,8 @@ import type { CustomGraphConfig } from "../settings";
 import { buildHierarchyModel, hierarchyToDevMdEntries, resolveProjectFolder } from "./hierarchy";
 import type { DevMdNodeEntry } from "./model";
 import {
-	DEV_MD_BASENAME,
 	getDevMdPath,
 	isDevMdPath,
-	resolveCodeScanRoot,
 } from "./paths";
 
 export {
@@ -136,7 +134,8 @@ export async function syncDevMd(
 		return entries.length;
 	}
 
-	await app.fileManager.processFrontMatter(file, (frontmatter) => {
+	await app.fileManager.processFrontMatter(file, (fm) => {
+		const frontmatter = fm as Record<string, unknown>;
 		frontmatter[DEV_GRAPH_FRONTMATTER_KEY] = true;
 		frontmatter[DEV_ROOT_FRONTMATTER_KEY] = scanRoot;
 		frontmatter[DEV_NODES_FRONTMATTER_KEY] = entries;

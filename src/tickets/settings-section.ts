@@ -52,33 +52,6 @@ export function renderTicketProjectsEditor(
 	renderProjects();
 }
 
-/** @deprecated Prefer declarative tickets toggle + {@link renderTicketProjectsEditor}. */
-export function renderTicketsSettingsSection(
-	containerEl: HTMLElement,
-	plugin: CorvidaePlugin,
-	onUpdate?: () => void
-): void {
-	new Setting(containerEl)
-		.setHeading()
-		.setName(t("settings.tickets.heading"))
-		.setDesc(t("settings.tickets.desc"));
-
-	new Setting(containerEl)
-		.setName(t("settings.tickets.autoOpen.name"))
-		.setDesc(t("settings.tickets.autoOpen.desc"))
-		.addToggle((toggle) =>
-			toggle
-				.setValue(plugin.settings.ticketsSidebarAutoOpen)
-				.onChange(async (value) => {
-					plugin.settings.ticketsSidebarAutoOpen = value;
-					await plugin.saveSettings();
-					onUpdate?.();
-				})
-		);
-
-	renderTicketProjectsEditor(containerEl, plugin, onUpdate);
-}
-
 function renderProjectCard(
 	listEl: HTMLElement,
 	plugin: CorvidaePlugin,
@@ -183,7 +156,7 @@ function renderProjectCard(
 	new Setting(card).addButton((button) =>
 		button
 			.setButtonText(t("settings.tickets.removeProject"))
-			.setWarning()
+			.setDestructive()
 			.onClick(async () => {
 				plugin.settings.ticketProjects = plugin.settings.ticketProjects.filter(
 					(entry) => entry.id !== project.id

@@ -36,7 +36,7 @@ function isInReadingPreview(el: Element): boolean {
 
 function getReadingPreviewEl(view: MarkdownView): HTMLElement | null {
 	const el = view.containerEl.querySelector(".markdown-preview-view");
-	return el instanceof HTMLElement ? el : null;
+	return el?.instanceOf(HTMLElement) ? el : null;
 }
 
 function overlayHost(cell: HTMLTableCellElement): HTMLElement {
@@ -54,10 +54,10 @@ function cellSourceText(host: HTMLElement): string {
 function applyOverlay(host: HTMLElement, displayText: string): void {
 	if (isEditableSurface(host)) return;
 
-	let src = host.querySelector(`:scope > .${SRC_CLASS}`) as HTMLElement | null;
-	let display = host.querySelector(
-		`:scope > .${DISPLAY_CLASS}`
-	) as HTMLElement | null;
+	const srcEl = host.querySelector(`:scope > .${SRC_CLASS}`);
+	const displayEl = host.querySelector(`:scope > .${DISPLAY_CLASS}`);
+	let src = srcEl?.instanceOf(HTMLElement) ? srcEl : null;
+	let display = displayEl?.instanceOf(HTMLElement) ? displayEl : null;
 
 	if (
 		src &&
@@ -69,13 +69,13 @@ function applyOverlay(host: HTMLElement, displayText: string): void {
 	}
 
 	if (!src) {
-		src = document.createElement("span");
-		src.className = SRC_CLASS;
-		while (host.firstChild) {
-			src.appendChild(host.firstChild);
+		const previous = Array.from(host.childNodes);
+		host.empty();
+		src = host.createSpan({ cls: SRC_CLASS });
+		for (const node of previous) {
+			src.appendChild(node);
 		}
 		display = host.createSpan({ cls: DISPLAY_CLASS });
-		host.insertBefore(src, display);
 		host.addClass(CELL_CLASS);
 	}
 
@@ -283,7 +283,7 @@ function enhanceReadingPreview(preview: HTMLElement): void {
 	const tables = preview.querySelectorAll("table");
 	for (let i = 0; i < tables.length; i++) {
 		const table = tables.item(i);
-		if (!(table instanceof HTMLTableElement)) continue;
+		if (!table?.instanceOf(HTMLTableElement)) continue;
 		if (table.closest(".corvidae-html-embed")) continue;
 		enhanceTable(table);
 	}

@@ -22,7 +22,7 @@ function firstCalloutExternalUrl(callout: HTMLElement): string | null {
 	const anchors = scope.querySelectorAll("a.external-link, a[href]");
 	for (let i = 0; i < anchors.length; i++) {
 		const a = anchors.item(i);
-		if (!(a instanceof HTMLAnchorElement)) continue;
+		if (!a?.instanceOf(HTMLAnchorElement)) continue;
 		if (isExternalHref(a.href)) return a.href;
 	}
 	return null;
@@ -42,19 +42,19 @@ function enhanceCalloutFavicons(root: HTMLElement): void {
 	const callouts = root.querySelectorAll(".callout");
 	for (let i = 0; i < callouts.length; i++) {
 		const callout = callouts.item(i);
-		if (!(callout instanceof HTMLElement)) continue;
+		if (!callout?.instanceOf(HTMLElement)) continue;
 
 		const pageUrl = firstCalloutExternalUrl(callout);
 		if (!pageUrl) continue;
 
 		const icon = callout.querySelector(".callout-icon");
-		if (!(icon instanceof HTMLElement)) continue;
+		if (!icon?.instanceOf(HTMLElement)) continue;
 		if (icon.querySelector(`.${FAVICON_CLASS}`)) continue;
 
 		const src = faviconUrlForPage(pageUrl);
 		if (!src) continue;
 
-		const previousHtml = icon.innerHTML;
+		const previousChildren = Array.from(icon.childNodes);
 		icon.empty();
 		const img = icon.createEl("img", {
 			cls: FAVICON_CLASS,
@@ -62,7 +62,9 @@ function enhanceCalloutFavicons(root: HTMLElement): void {
 		});
 		img.addEventListener("error", () => {
 			icon.empty();
-			icon.innerHTML = previousHtml;
+			for (const child of previousChildren) {
+				icon.appendChild(child);
+			}
 		});
 	}
 }
@@ -74,7 +76,7 @@ function collectSectionCalloutUrls(heading: HTMLElement): string[] {
 
 	let sibling = heading.nextElementSibling;
 	while (sibling) {
-		if (!(sibling instanceof HTMLElement)) {
+		if (!sibling.instanceOf(HTMLElement)) {
 			sibling = sibling.nextElementSibling;
 			continue;
 		}
@@ -89,11 +91,11 @@ function collectSectionCalloutUrls(heading: HTMLElement): string[] {
 				: Array.from(sibling.querySelectorAll(".callout"));
 
 		for (const callout of callouts) {
-			if (!(callout instanceof HTMLElement)) continue;
+			if (!callout.instanceOf(HTMLElement)) continue;
 			const anchors = callout.querySelectorAll("a.external-link, a[href]");
 			for (let i = 0; i < anchors.length; i++) {
 				const a = anchors.item(i);
-				if (!(a instanceof HTMLAnchorElement)) continue;
+				if (!a?.instanceOf(HTMLAnchorElement)) continue;
 				if (!isExternalHref(a.href) || seen.has(a.href)) continue;
 				seen.add(a.href);
 				urls.push(a.href);
@@ -118,7 +120,7 @@ function enhanceHeadingOpenLinks(root: HTMLElement): void {
 	const headings = root.querySelectorAll(HEADING_SELECTOR);
 	for (let i = 0; i < headings.length; i++) {
 		const heading = headings.item(i);
-		if (!(heading instanceof HTMLElement)) continue;
+		if (!heading?.instanceOf(HTMLElement)) continue;
 		if (heading.dataset.corvidaeHeadingLinks === "1") continue;
 
 		const urls = collectSectionCalloutUrls(heading);
@@ -128,7 +130,14 @@ function enhanceHeadingOpenLinks(root: HTMLElement): void {
 		heading.addClass(HEADING_OPEN_CLASS);
 		heading.addEventListener("click", (evt) => {
 			const target = evt.target;
-			if (target instanceof Element && target.closest("a")) return;
+			if (
+				target &&
+				typeof (target as Node).instanceOf === "function" &&
+				(target as Node).instanceOf(Element) &&
+				(target as Element).closest("a")
+			) {
+				return;
+			}
 			evt.preventDefault();
 			openUrlsStaggered(urls);
 		});

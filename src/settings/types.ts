@@ -38,7 +38,7 @@ export interface CorvidaeSettings {
 	/** Auch Knoten ohne eigene Farbe in der Legende */
 	legendShowDefaultAndUncolored: boolean;
 
-	/** Graph: ![[…​.base]] / ![[…​.canvas]]-Embeds echt entkoppeln (keine Linie, keine Force) */
+	/** Graph: ![[....base]] / ![[....canvas]] embeds fully decouple (no line, no force) */
 	graphHideBaseEmbedLinks: boolean;
 
 	/** Graph: nur Kanten aus Frontmatter-Feld `link` (Body-[[…]] bleiben klickbar) */

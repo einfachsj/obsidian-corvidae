@@ -8,11 +8,11 @@
 
 /* Notiz-Dateititel (.md inline title) global steuern */
 body.corvidae-hide-note-file-title .inline-title {
-	display: none !important;
+	display: none;
 }
 
 body.corvidae-show-note-file-title .inline-title {
-	display: block !important;
+	display: block;
 }
 
 /* ![[]] embeds — full note width (height stays auto / aspect-ratio) */
@@ -23,8 +23,8 @@ body.corvidae-show-note-file-title .inline-title {
 .markdown-source-view .internal-embed,
 .markdown-source-view .markdown-embed,
 .markdown-source-view .markdown-embed-content {
-	width: 100% !important;
-	max-width: 100% !important;
+	width: 100%;
+	max-width: 100%;
 	box-sizing: border-box;
 }
 
@@ -36,17 +36,17 @@ body.corvidae-show-note-file-title .inline-title {
 .markdown-source-view .internal-embed video,
 .markdown-source-view .markdown-embed img,
 .markdown-source-view .markdown-embed video {
-	width: 100% !important;
-	max-width: 100% !important;
-	height: auto !important;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
 }
 
 .markdown-preview-view .internal-embed iframe,
 .markdown-preview-view .markdown-embed iframe,
 .markdown-source-view .internal-embed iframe,
 .markdown-source-view .markdown-embed iframe {
-	width: 100% !important;
-	max-width: 100% !important;
+	width: 100%;
+	max-width: 100%;
 }
 
 /* Excalidraw: override default embed width (often inline 400px / max-width) */
@@ -64,15 +64,15 @@ body.corvidae-show-note-file-title .inline-title {
 .markdown-source-view .excalidraw-svg-right,
 .markdown-source-view .excalidraw-svg-left-wrap,
 .markdown-source-view .excalidraw-svg-right-wrap {
-	width: 100% !important;
-	max-width: 100% !important;
-	height: auto !important;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
 }
 
 .markdown-preview-view .internal-embed.media-embed.image-embed,
 .markdown-source-view .internal-embed.media-embed.image-embed {
-	width: 100% !important;
-	max-width: 100% !important;
+	width: 100%;
+	max-width: 100%;
 	display: block;
 }
 
@@ -189,7 +189,7 @@ body .nav-files-container .nav-buttons-container {
 /* Versiegelte Entwicklungs-Projektordner: kein Aufklappen, aber klickbar */
 .nav-folder.corvidae-dev-sealed > .nav-folder-title > .nav-folder-collapse-indicator,
 .nav-folder.corvidae-dev-sealed > .nav-folder-title > .tree-item-icon.collapse-icon {
-	display: none !important;
+	display: none;
 	pointer-events: none;
 }
 
@@ -198,7 +198,7 @@ body .nav-files-container .nav-buttons-container {
 }
 
 .nav-folder.corvidae-dev-sealed > .nav-folder-children {
-	display: none !important;
+	display: none;
 }
 
 /* Aufklapp-Pfeil → Kreis (nur Datei-Explorer) */
@@ -329,7 +329,7 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 /* Cell merge markers << / ^^ — Reading View only */
 .markdown-preview-view td.corvidae-table-merged-away,
 .markdown-preview-view th.corvidae-table-merged-away {
-	display: none !important;
+	display: none;
 }
 
 .markdown-preview-view td.corvidae-table-merge-anchor,
@@ -339,22 +339,22 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 
 /* Reading View: many tables side by side (wrap if needed), 8px gap */
 .markdown-preview-view .corvidae-tables-side {
-	display: flex !important;
-	flex-direction: row !important;
-	flex-wrap: wrap !important;
-	align-items: flex-start !important;
-	gap: 8px !important;
-	width: 100% !important;
-	max-width: 100% !important;
-	margin: 0.5em 0 !important;
-	box-sizing: border-box !important;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 8px;
+	width: 100%;
+	max-width: 100%;
+	margin: 0.5em 0;
+	box-sizing: border-box;
 }
 
 .markdown-preview-view .corvidae-tables-side-col {
-	flex: 1 1 160px !important;
-	min-width: 140px !important;
-	max-width: 100% !important;
-	margin: 0 !important;
+	flex: 1 1 160px;
+	min-width: 140px;
+	max-width: 100%;
+	margin: 0;
 	overflow-x: auto;
 }
 
@@ -362,24 +362,24 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 .markdown-preview-view .corvidae-tables-side-col > .el-p,
 .markdown-preview-view .corvidae-tables-side-col > [class^="el-h"],
 .markdown-preview-view .corvidae-tables-side-col > .corvidae-tables-side-item {
-	width: 100% !important;
-	max-width: 100% !important;
-	margin: 0 0 0.35em 0 !important;
-	display: block !important;
-	float: none !important;
+	width: 100%;
+	max-width: 100%;
+	margin: 0 0 0.35em 0;
+	display: block;
+	float: none;
 }
 
 .markdown-preview-view .corvidae-tables-side-col > .el-table {
-	margin-bottom: 0 !important;
+	margin-bottom: 0;
 }
 
 .markdown-preview-view .corvidae-tables-side-col table {
-	width: 100% !important;
-	margin: 0 !important;
+	width: 100%;
+	margin: 0;
 }
 
 .markdown-preview-view .corvidae-tables-side-gap {
-	display: none !important;
+	display: none;
 }
 
 /* Keep empty table columns visible (do not collapse blank cells) */
@@ -391,9 +391,9 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 .markdown-preview-view th.corvidae-table-empty-col,
 .markdown-preview-view td:empty,
 .markdown-preview-view th:empty {
-	min-width: 1.75em !important;
-	padding-left: 0.5em !important;
-	padding-right: 0.5em !important;
+	min-width: 1.75em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 /* Truly blank cells only — never hide "-" placeholders */
@@ -866,7 +866,7 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 }
 
 .corvidae-box-note-workspace .inline-title {
-	display: none !important;
+	display: none;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view .metadata-container {

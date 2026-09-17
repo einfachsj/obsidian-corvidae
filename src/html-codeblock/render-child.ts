@@ -175,11 +175,15 @@ export class CorvidaeHtmlRenderChild extends MarkdownRenderChild {
 
 		// Build detached: set sandbox before src before append — avoids
 		// Chromium leaking parent origin into the initial about:blank doc.
-		const iframe = this.containerEl.ownerDocument.createElement("iframe");
-		iframe.className = "corvidae-html-iframe";
-		iframe.setAttribute("sandbox", SANDBOX);
-		iframe.setAttribute("title", "CORVIDAE HTML");
-		iframe.setAttribute("scrolling", "no");
+		// Build detached via global createEl: sandbox attrs before src, then append.
+		const iframe = createEl("iframe", {
+			cls: "corvidae-html-iframe",
+			attr: {
+				sandbox: SANDBOX,
+				title: "CORVIDAE HTML",
+				scrolling: "no",
+			},
+		});
 		iframe.src = this.blobUrl;
 		this.iframe = iframe;
 		this.containerEl.appendChild(iframe);
@@ -201,16 +205,17 @@ export class CorvidaeHtmlRenderChild extends MarkdownRenderChild {
 
 	private onMessage = (event: MessageEvent): void => {
 		if (!this.iframe || event.source !== this.iframe.contentWindow) return;
-		const data = event.data;
-		if (!data || typeof data !== "object") return;
+		const raw: unknown = event.data;
+		if (!raw || typeof raw !== "object") return;
 
-		const type = (data as { type?: unknown }).type;
+		const data = raw as { type?: unknown; height?: unknown; top?: unknown };
+		const type = data.type;
 		if (type === HEIGHT_MSG_TYPE) {
-			this.applyHeight((data as { height?: unknown }).height);
+			this.applyHeight(data.height);
 			return;
 		}
 		if (type === SCROLL_MSG_TYPE) {
-			this.scrollNoteToOffset((data as { top?: unknown }).top);
+			this.scrollNoteToOffset(data.top);
 		}
 	};
 

@@ -66,7 +66,7 @@ export class LegendManager {
 
 			const existing = container.querySelector(`.${LEGEND_CLASS}`);
 			if (
-				existing instanceof HTMLElement &&
+				existing?.instanceOf(HTMLElement) &&
 				existing.dataset.corvidaeFingerprint === fingerprint
 			) {
 				continue;
@@ -82,13 +82,13 @@ export class LegendManager {
 				colorKey(a).localeCompare(colorKey(b))
 			);
 
-			const remembered = this.selectedColorByLeaf.get(leaf as object);
+			const remembered = this.selectedColorByLeaf.get(leaf);
 			const initialColor =
 				remembered && colors.some((c) => colorKey(c) === colorKey(remembered))
 					? remembered
 					: colors[0];
 
-			this.selectedColorByLeaf.set(leaf as object, initialColor);
+			this.selectedColorByLeaf.set(leaf, initialColor);
 
 			const filterRow = legend.createDiv({ cls: "corvidae-legend-filter" });
 			const select = filterRow.createEl("select", {
@@ -149,7 +149,7 @@ export class LegendManager {
 
 			select.addEventListener("change", () => {
 				const value = select.value;
-				this.selectedColorByLeaf.set(leaf as object, value);
+				this.selectedColorByLeaf.set(leaf, value);
 				renderList(value);
 			});
 		}

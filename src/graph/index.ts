@@ -3,8 +3,6 @@ export { LegendManager } from "./legend";
 export {
 	DECOUPLE_EMBED_EXTS,
 	isDecoupleEmbedPath,
-	isEmbedOnlyBaseEdge,
-	isEmbedOnlyBaseLink,
 	isEmbedOnlyDecoupledEdge,
 	isEmbedOnlyDecoupledLink,
 } from "./embed-links";

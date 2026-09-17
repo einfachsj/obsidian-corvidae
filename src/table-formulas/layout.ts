@@ -7,7 +7,7 @@ const SIDE_CLEAR_CLASS = "corvidae-tables-side-clear";
 const SIDE_GAP_PX = 8;
 
 function isEmptyFlowGap(el: Element): boolean {
-	if (!(el instanceof HTMLElement)) return true;
+	if (!el.instanceOf(HTMLElement)) return true;
 	if (el.classList.contains(SIDE_CLEAR_CLASS)) return true;
 	if (el.classList.contains(SIDE_CLASS)) return false;
 	if (el.classList.contains(SIDE_COL_CLASS)) return false;
@@ -41,7 +41,7 @@ function isTableBlock(el: HTMLElement): boolean {
 	if (el.tagName === "TABLE") return true;
 	return (
 		el.children.length === 1 &&
-		el.children[0] instanceof HTMLTableElement &&
+		el.children[0].instanceOf(HTMLTableElement) &&
 		!el.classList.contains("markdown-preview-sizer")
 	);
 }
@@ -91,35 +91,35 @@ function clearItemStyles(el: HTMLElement): void {
 }
 
 function unwrapLegacyRows(root: ParentNode): void {
-	const scope = root instanceof Element ? root : null;
+	const scope = (root as Node).instanceOf(Element) ? (root as Element) : null;
 	const q = (sel: string): NodeListOf<Element> =>
 		scope
 			? scope.querySelectorAll(sel)
 			: (root as Document).querySelectorAll?.(sel) ?? [];
 
 	q(`.${SIDE_COL_CLASS}`).forEach((col) => {
-		if (!(col instanceof HTMLElement)) return;
+		if (!col.instanceOf(HTMLElement)) return;
 		const parent = col.parentElement;
 		if (!parent) return;
 		while (col.firstChild) {
 			const child = col.firstChild;
-			if (child instanceof HTMLElement) clearItemStyles(child);
+			if (child.instanceOf(HTMLElement)) clearItemStyles(child);
 			parent.insertBefore(child, col);
 		}
 		col.remove();
 	});
 
 	q(`.${SIDE_CLASS}`).forEach((side) => {
-		if (!(side instanceof HTMLElement)) return;
+		if (!side.instanceOf(HTMLElement)) return;
 		const parent = side.parentElement;
 		if (!parent) return;
 		while (side.firstChild) {
 			const child = side.firstChild;
-			if (child instanceof HTMLElement) {
+			if (child.instanceOf(HTMLElement)) {
 				if (child.classList.contains(SIDE_COL_CLASS)) {
 					while (child.firstChild) {
 						const inner = child.firstChild;
-						if (inner instanceof HTMLElement) clearItemStyles(inner);
+						if (inner.instanceOf(HTMLElement)) clearItemStyles(inner);
 						parent.insertBefore(inner, side);
 					}
 					child.remove();
@@ -136,10 +136,10 @@ function unwrapLegacyRows(root: ParentNode): void {
 
 	q(`.${SIDE_CLEAR_CLASS}`).forEach((el) => el.remove());
 	q(`.${SIDE_GAP_CLASS}`).forEach((el) => {
-		if (el instanceof HTMLElement) el.removeClass(SIDE_GAP_CLASS);
+		if (el.instanceOf(HTMLElement)) el.removeClass(SIDE_GAP_CLASS);
 	});
 	q(`.${SIDE_ITEM_CLASS}`).forEach((el) => {
-		if (el instanceof HTMLElement) clearItemStyles(el);
+		if (el.instanceOf(HTMLElement)) clearItemStyles(el);
 	});
 }
 
@@ -210,7 +210,7 @@ function applyColumns(columns: ColumnSpec[]): void {
 function layoutPreviewSizer(sizer: HTMLElement): void {
 	const children = Array.from(sizer.children).filter(
 		(c): c is HTMLElement =>
-			c instanceof HTMLElement &&
+			c.instanceOf(HTMLElement) &&
 			!c.classList.contains(SIDE_CLEAR_CLASS)
 	);
 
@@ -256,18 +256,19 @@ export function applySideBySideTables(root: ParentNode): void {
 
 	const sizers: HTMLElement[] = [];
 
-	if (root instanceof HTMLElement) {
+	if ((root as Node).instanceOf(HTMLElement)) {
+		const rootEl = root as HTMLElement;
 		if (
-			root.classList.contains("markdown-preview-sizer") &&
-			root.closest(".markdown-preview-view") &&
-			!root.closest(".markdown-source-view, .cm-editor")
+			rootEl.classList.contains("markdown-preview-sizer") &&
+			rootEl.closest(".markdown-preview-view") &&
+			!rootEl.closest(".markdown-source-view, .cm-editor")
 		) {
-			sizers.push(root);
+			sizers.push(rootEl);
 		}
-		root
+		rootEl
 			.querySelectorAll(".markdown-preview-view .markdown-preview-sizer")
 			.forEach((el) => {
-				if (!(el instanceof HTMLElement)) return;
+				if (!el.instanceOf(HTMLElement)) return;
 				if (el.closest(".markdown-source-view, .cm-editor")) return;
 				sizers.push(el);
 			});
