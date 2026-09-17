@@ -1,6 +1,6 @@
 # CORVIDAE
 
-**v2.0.4** · Obsidian plugin by [ein.ink](https://ein.ink)
+**v2.0.6** · Obsidian plugin by [ein.ink](https://ein.ink)
 
 Configure a modular dashboard for your vault — graph, notes, websites, and terminals in one workspace, plus project tickets, folder notes, and graph styling tools.
 
@@ -9,6 +9,8 @@ Configure a modular dashboard for your vault — graph, notes, websites, and ter
 - **Modular dashboard** — Grid layout with graph, note, browser, terminal, and ticket boxes
 - **Ticket sidebar** — Create numbered project tickets with auto frontmatter
 - **Graph View extensions** — Node size and color from frontmatter, custom legend
+- **Custom Graph** — Separate hierarchy graph for project folders, source files, and code functions
+- **Vault bar** — Graph + Crow icons next to Help/Settings (no left ribbon required)
 - **Folder notes** — Sync folders with matching notes, rename and open on click
 - **Hybrid links** — Auto-sync `link` property between sibling notes in a folder
 - **Auto-frontmatter** — Default aliases, tags, size, and color for new notes
@@ -59,7 +61,7 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 ## GitHub Release
 
 1. Bump `version` in `manifest.json` and `package.json`
-2. `git tag 2.0.4 && git push origin 2.0.4`
+2. `git tag 2.0.6 && git push origin 2.0.6`
 3. GitHub Actions builds into `build/` and **publishes** a release with those assets
 4. Tag must match `manifest.version` — Obsidian installs from the release assets (`main.js`, `manifest.json`, `styles.css`), not the Source code zip
 
@@ -71,4 +73,4 @@ Do not commit `node_modules/`, `build/`, `data.json`, or `backup/`.
 
 ## License
 
-MIT — see [LICENSE](LICENSE)
+MIT 

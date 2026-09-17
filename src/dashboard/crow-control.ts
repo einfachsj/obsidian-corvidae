@@ -5,27 +5,31 @@ import type CorvidaePlugin from "../main";
 const PROFILE_ACTIONS_SELECTOR =
 	".workspace-sidedock-vault-profile .workspace-sidedock-vault-profile-actions";
 const DASHBOARD_TOGGLE_ICON = "bird";
+const GRAPH_OPEN_ICON = "git-fork";
 
 export class DashboardCrowControl {
 	private button: HTMLButtonElement | null = null;
+	private graphButton: HTMLButtonElement | null = null;
 
 	constructor(private plugin: CorvidaePlugin) {}
 
 	onload(): void {
 		this.plugin.registerEvent(
 			this.plugin.app.workspace.on("layout-change", () => {
-				this.ensureButton();
+				this.ensureButtons();
 				this.updateButtonState();
 			})
 		);
 
 		this.plugin.app.workspace.onLayoutReady(() => {
-			this.ensureButton();
+			this.ensureButtons();
 			this.updateButtonState();
 		});
 	}
 
 	onunload(): void {
+		this.graphButton?.remove();
+		this.graphButton = null;
 		this.button?.remove();
 		this.button = null;
 	}
@@ -46,17 +50,48 @@ export class DashboardCrowControl {
 		);
 	}
 
-	private ensureButton(): void {
+	private ensureButtons(): void {
 		const actionsEl =
 			document.querySelector(PROFILE_ACTIONS_SELECTOR) ??
 			document.querySelector(".workspace-sidedock-vault-profile");
 		if (!actionsEl?.instanceOf(HTMLElement)) return;
 		const actions = actionsEl;
 
-		if (actions.querySelector(".corvidae-crow-profile-button")) {
-			this.button = actions.querySelector<HTMLButtonElement>(
-				".corvidae-crow-profile-button"
-			);
+		this.ensureGraphButton(actions);
+		this.ensureCrowButton(actions);
+		this.orderButtons(actions);
+	}
+
+	private ensureGraphButton(actions: HTMLElement): void {
+		const existing = actions.querySelector<HTMLButtonElement>(
+			".corvidae-graph-profile-button"
+		);
+		if (existing) {
+			this.graphButton = existing;
+			return;
+		}
+
+		const button = actions.createEl("button", {
+			cls: "clickable-icon corvidae-graph-profile-button",
+			attr: {
+				type: "button",
+				"aria-label": t("dashboard.actions.openGraph"),
+			},
+		});
+		setIcon(button, GRAPH_OPEN_ICON);
+		button.addEventListener("click", () => {
+			void this.openStandardGraph();
+		});
+
+		this.graphButton = button;
+	}
+
+	private ensureCrowButton(actions: HTMLElement): void {
+		const existing = actions.querySelector<HTMLButtonElement>(
+			".corvidae-crow-profile-button"
+		);
+		if (existing) {
+			this.button = existing;
 			return;
 		}
 
@@ -73,5 +108,21 @@ export class DashboardCrowControl {
 		});
 
 		this.button = button;
+	}
+
+	/** Keep order: … settings → graph → crow */
+	private orderButtons(actions: HTMLElement): void {
+		if (!this.graphButton || !this.button) return;
+		if (this.graphButton.nextElementSibling !== this.button) {
+			actions.insertBefore(this.graphButton, this.button);
+		}
+		if (this.button.parentElement === actions) {
+			actions.appendChild(this.button);
+		}
+	}
+
+	private async openStandardGraph(): Promise<void> {
+		const leaf = this.plugin.app.workspace.getLeaf(false);
+		await leaf.setViewState({ type: "graph", state: {}, active: true });
 	}
 }

@@ -3,6 +3,13 @@ import type { TranslationCatalog } from "./types";
 export const en: TranslationCatalog = {
 	"settings.title": "CORVIDAE",
 	"settings.subtitle": "Graph view & frontmatter by ein.ink",
+	"settings.tips.name": "Description & tips",
+	"settings.tips.desc":
+		"Opens the Corvidae tips note from the plugin folder (not a vault file).",
+	"settings.tips.button": "Open tips",
+	"settings.tips.viewTitle": "CORVIDAE",
+	"settings.tips.notice.opened": "Opened Corvidae tips.",
+	"settings.tips.notice.error": "Could not load Corvidae tips.",
 	"settings.language.name": "Language",
 	"settings.language.desc": "Display language for plugin UI.",
 	"settings.language.auto": "Automatic (Obsidian UI)",
@@ -10,10 +17,16 @@ export const en: TranslationCatalog = {
 	"settings.language.de": "Deutsch",
 	"settings.showLegend.name": "Show legend",
 	"settings.showLegend.desc":
-		"Shows nodes with alias and color dot in the top-left of the graph.",
+		"Shows a color filter and note names with color dots in the top-left of the graph. Click opens the note in a new tab.",
 	"settings.legendShowAll.name": "All nodes in legend",
 	"settings.legendShowAll.desc":
 		"Also show nodes without color and with the default color. Default: only non-default colors.",
+	"settings.graphHideBaseEmbedLinks.name": "Decouple .base/.canvas embeds in graph",
+	"settings.graphHideBaseEmbedLinks.desc":
+		"Remove force and edge for ![[file.base]] / ![[file.canvas]] embeds. A normal [[…]] link still connects.",
+	"settings.graphOnlyFrontmatterLinks.name": "Graph only via frontmatter link",
+	"settings.graphOnlyFrontmatterLinks.desc":
+		"Only the frontmatter link field creates graph edges. [[…]] in the note stay clickable but do not affect the graph.",
 	"settings.sizeProperty.name": "Frontmatter field: size",
 	"settings.sizeProperty.desc": "Graph property (type: Graph). Example: size: 50",
 	"settings.minSize.name": "Minimum size",
@@ -29,6 +42,39 @@ export const en: TranslationCatalog = {
 	"settings.folderNotes.excludedPaths.desc": "Comma-separated. No auto-sync in these paths.",
 	"settings.folderNotes.openOnClick.name": "Folder opens note",
 	"settings.folderNotes.hideInExplorer.name": "Hide note in explorer",
+	"settings.developmentFolders.heading": "Development folders",
+	"settings.developmentFolders.desc":
+		"Container for projects (e.g. CURSOR). The folder and its direct children stay visible; children get the DEV label. Content under those children is sealed (not expandable, omitted from the vault graph, no auto frontmatter).",
+	"settings.developmentFolders.add": "Add folder",
+	"settings.developmentFolders.remove": "Remove",
+	"settings.developmentFolders.pathPlaceholder": "e.g. CURSOR",
+	"settings.customGraph.heading": "Custom Graph",
+	"settings.customGraph.desc":
+		"Folder-structure graph per project. Development folder (e.g. CURSOR) seals projects; project folder holds dev.md and opens the graph on click; code folder (e.g. src) supplies the nodes. Enable Functions for symbols from code.",
+	"settings.customGraph.add": "Add Custom Graph",
+	"settings.customGraph.remove": "Remove",
+	"settings.customGraph.defaultName": "Custom Graph",
+	"settings.customGraph.name": "Name",
+	"settings.customGraph.namePlaceholder": "e.g. Test Graph",
+	"settings.customGraph.folder.name": "Project folder",
+	"settings.customGraph.folder.desc":
+		"Project root (e.g. CURSOR/corvidae-v-2.0.0). dev.md lives here. Clicking this folder (DEV) in the explorer opens the graph.",
+	"settings.customGraph.folder.placeholder": "e.g. CURSOR/corvidae-v-2.0.0",
+	"settings.customGraph.codeFolder.name": "Code folder",
+	"settings.customGraph.codeFolder.desc":
+		"Scan root for graph nodes (e.g. src). Relative to the project folder or vault-relative. Empty = entire project folder.",
+	"settings.customGraph.codeFolder.placeholder": "e.g. src",
+	"customGraph.viewTitle": "Custom Graph",
+	"customGraph.command": "Open Custom Graph",
+	"customGraph.ribbonTooltip": "Custom Graph",
+	"customGraph.empty":
+		"Select a project folder under Settings → CORVIDAE → Custom Graph.",
+	"customGraph.notice.noFolder":
+		"Add a Custom Graph with a project folder in CORVIDAE settings first.",
+	"customGraph.bonus.off": "Functions",
+	"customGraph.bonus.on": "Functions (on)",
+	"customGraph.edgeLength": "Edge length",
+	"customGraph.pickPlaceholder": "Choose Custom Graph…",
 	"settings.newNotes.heading": "New notes",
 	"settings.newNotes.autoFrontmatter.name": "Auto frontmatter",
 	"settings.newNotes.autoFrontmatter.desc":
@@ -47,9 +93,12 @@ export const en: TranslationCatalog = {
 	"explorer.tag.draw": "DRAW",
 	"explorer.tag.folder": "FOLDER",
 	"explorer.tag.hybrid": "HYBRID",
+	"explorer.tag.dev": "DEV",
 	"properties.graphType": "Graph",
 	"properties.linkType": "Link",
 	"legend.title": "CORVIDAE",
+	"legend.filterColor": "Filter by color",
+	"legend.empty": "No notes for this color",
 	"dashboard.viewTitle": "CORVIDAE Dashboard",
 	"dashboard.title": "CORVIDAE",
 	"dashboard.subtitle": "Your project overview",
@@ -59,7 +108,7 @@ export const en: TranslationCatalog = {
 	"dashboard.actions.openGraph": "Open graph",
 	"dashboard.bar.expand": "Expand dashboard bar",
 	"dashboard.bar.collapse": "Collapse dashboard bar",
-	"dashboard.crow.link": "Open CORVIDAE plugin website",
+	"dashboard.crow.link": "Open CORVIDAE",
 	"dashboard.box.create": "Create box",
 	"dashboard.box.move": "Move boxes",
 	"dashboard.box.edit": "Edit boxes",
@@ -122,6 +171,9 @@ export const en: TranslationCatalog = {
 	"settings.dashboard.autoOpen.name": "Split-down dashboard",
 	"settings.dashboard.autoOpen.desc":
 		"Large dashboard when nothing is open. When content is open, a horizontally scrollable project bar appears at the bottom with a crow toggle.",
+	"settings.showNoteFileTitle.name": "Show file title",
+	"settings.showNoteFileTitle.desc":
+		"Show or hide the file title (.md inline title) in notes.",
 	"settings.tickets.heading": "Tickets",
 	"settings.tickets.desc":
 		"Configure projects with undone and done folders. The ticket sidebar lets you create a new ticket per project.",

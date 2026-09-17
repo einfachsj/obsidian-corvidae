@@ -3,6 +3,13 @@ import type { TranslationCatalog } from "./types";
 export const de: TranslationCatalog = {
 	"settings.title": "CORVIDAE",
 	"settings.subtitle": "Graph-View & Frontmatter von ein.ink",
+	"settings.tips.name": "Beschreibung & Tipps",
+	"settings.tips.desc":
+		"Öffnet die Corvidae-Tipps-Notiz aus dem Plugin-Ordner (keine Vault-Datei).",
+	"settings.tips.button": "Tipps öffnen",
+	"settings.tips.viewTitle": "CORVIDAE",
+	"settings.tips.notice.opened": "Corvidae-Tipps geöffnet.",
+	"settings.tips.notice.error": "Corvidae-Tipps konnten nicht geladen werden.",
 	"settings.language.name": "Sprache",
 	"settings.language.desc": "Anzeigesprache für die Plugin-Oberfläche.",
 	"settings.language.auto": "Automatisch (Obsidian UI)",
@@ -10,10 +17,16 @@ export const de: TranslationCatalog = {
 	"settings.language.de": "Deutsch",
 	"settings.showLegend.name": "Legende anzeigen",
 	"settings.showLegend.desc":
-		"Zeigt oben links im Graph Knoten mit Alias und Farb-Dot.",
+		"Zeigt oben links im Graph einen Farbfilter und Notiznamen mit Farb-Dot. Klick öffnet die Notiz in einem neuen Tab.",
 	"settings.legendShowAll.name": "Alle Knoten in Legende",
 	"settings.legendShowAll.desc":
 		"Auch Knoten ohne color und mit Standardfarbe anzeigen. Standard: nur abweichende Farben.",
+	"settings.graphHideBaseEmbedLinks.name": ".base/.canvas-Embeds im Graph entkoppeln",
+	"settings.graphHideBaseEmbedLinks.desc":
+		"Entfernt Linie und Force für ![[datei.base]] / ![[datei.canvas]]-Embeds. Ein normaler [[…]]-Link bleibt verbunden.",
+	"settings.graphOnlyFrontmatterLinks.name": "Graph nur über Frontmatter-Link",
+	"settings.graphOnlyFrontmatterLinks.desc":
+		"Nur das Frontmatter-Feld link erzeugt Graph-Kanten. [[…]] in der Notiz bleiben klickbar, beeinflussen den Graph aber nicht.",
 	"settings.sizeProperty.name": "Frontmatter-Feld: Größe",
 	"settings.sizeProperty.desc": "Graph-Property (Typ: Graph). Beispiel: size: 50",
 	"settings.minSize.name": "Minimale Größe",
@@ -29,6 +42,39 @@ export const de: TranslationCatalog = {
 	"settings.folderNotes.excludedPaths.desc": "Komma-getrennt. Kein Auto-Sync in diesen Pfaden.",
 	"settings.folderNotes.openOnClick.name": "Ordner öffnet Notiz",
 	"settings.folderNotes.hideInExplorer.name": "Notiz im Explorer verstecken",
+	"settings.developmentFolders.heading": "Entwicklungsordner",
+	"settings.developmentFolders.desc":
+		"Container für Projekte (z. B. CURSOR). Der Ordner und seine direkten Kinder bleiben sichtbar; die Kinder bekommen das Label DEV. Inhalt unter den direkten Kindern ist versiegelt (nicht aufklappbar, nicht im Vault-Graph, kein Auto-Frontmatter).",
+	"settings.developmentFolders.add": "Ordner hinzufügen",
+	"settings.developmentFolders.remove": "Entfernen",
+	"settings.developmentFolders.pathPlaceholder": "z. B. CURSOR",
+	"settings.customGraph.heading": "Custom Graph",
+	"settings.customGraph.desc":
+		"Ordnerstruktur-Graph pro Projekt. Entwicklungsordner (z. B. CURSOR) versiegelt die Projekte; Projektordner trägt dev.md und öffnet den Graph per Klick; Code-Ordner (z. B. src) liefert die Knoten. Funktionen blendet Symbole aus dem Code ein.",
+	"settings.customGraph.add": "Custom Graph hinzufügen",
+	"settings.customGraph.remove": "Entfernen",
+	"settings.customGraph.defaultName": "Custom Graph",
+	"settings.customGraph.name": "Name",
+	"settings.customGraph.namePlaceholder": "z. B. Test Graph",
+	"settings.customGraph.folder.name": "Projektordner",
+	"settings.customGraph.folder.desc":
+		"Projektroot (z. B. CURSOR/corvidae-v-2.0.0). Hier liegt dev.md. Klick auf diesen Ordner (DEV) im Explorer öffnet den Graph.",
+	"settings.customGraph.folder.placeholder": "z. B. CURSOR/corvidae-v-2.0.0",
+	"settings.customGraph.codeFolder.name": "Code-Ordner",
+	"settings.customGraph.codeFolder.desc":
+		"Scan-Wurzel für Graph-Knoten (z. B. src). Relativ zum Projektordner oder vault-relativ. Leer = gesamter Projektordner.",
+	"settings.customGraph.codeFolder.placeholder": "z. B. src",
+	"customGraph.viewTitle": "Custom Graph",
+	"customGraph.command": "Custom Graph öffnen",
+	"customGraph.ribbonTooltip": "Custom Graph",
+	"customGraph.empty":
+		"Wähle unter Einstellungen → CORVIDAE → Custom Graph einen Projektordner.",
+	"customGraph.notice.noFolder":
+		"Lege zuerst einen Custom Graph mit Projektordner in den CORVIDAE-Einstellungen an.",
+	"customGraph.pickPlaceholder": "Custom Graph wählen…",
+	"customGraph.bonus.off": "Funktionen",
+	"customGraph.bonus.on": "Funktionen (an)",
+	"customGraph.edgeLength": "Kantenlänge",
 	"settings.newNotes.heading": "Neue Notizen",
 	"settings.newNotes.autoFrontmatter.name": "Auto-Frontmatter",
 	"settings.newNotes.autoFrontmatter.desc":
@@ -47,9 +93,12 @@ export const de: TranslationCatalog = {
 	"explorer.tag.draw": "ZEICH",
 	"explorer.tag.folder": "ORDNER",
 	"explorer.tag.hybrid": "HYBRID",
+	"explorer.tag.dev": "DEV",
 	"properties.graphType": "Graph",
 	"properties.linkType": "Link",
 	"legend.title": "CORVIDAE",
+	"legend.filterColor": "Nach Farbe filtern",
+	"legend.empty": "Keine Notizen für diese Farbe",
 	"dashboard.viewTitle": "CORVIDAE Dashboard",
 	"dashboard.title": "CORVIDAE",
 	"dashboard.subtitle": "Deine Projektübersicht",
@@ -59,7 +108,7 @@ export const de: TranslationCatalog = {
 	"dashboard.actions.openGraph": "Graph öffnen",
 	"dashboard.bar.expand": "Dashboard-Leiste ausklappen",
 	"dashboard.bar.collapse": "Dashboard-Leiste einklappen",
-	"dashboard.crow.link": "CORVIDAE Plugin-Website öffnen",
+	"dashboard.crow.link": "CORVIDAE öffnen",
 	"dashboard.box.create": "Box erstellen",
 	"dashboard.box.move": "Boxen bewegen",
 	"dashboard.box.edit": "Boxen bearbeiten",
@@ -122,6 +171,9 @@ export const de: TranslationCatalog = {
 	"settings.dashboard.autoOpen.name": "Split-down Dashboard",
 	"settings.dashboard.autoOpen.desc":
 		"Großes Dashboard ohne offene Ansicht. Bei geöffnetem Inhalt erscheint unten eine horizontal scrollbare Projekt-Leiste mit Crow-Toggle.",
+	"settings.showNoteFileTitle.name": "Dateititel anzeigen",
+	"settings.showNoteFileTitle.desc":
+		"Den Dateititel (.md Inline-Titel) in Notizen ein- oder ausblenden.",
 	"settings.tickets.heading": "Tickets",
 	"settings.tickets.desc":
 		"Projekte mit Undone- und Done-Ordnern konfigurieren. In der Ticket-Sidebar kann pro Projekt ein neues Ticket erstellt werden.",

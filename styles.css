@@ -6,6 +6,76 @@
 	display: none;
 }
 
+/* Notiz-Dateititel (.md inline title) global steuern */
+body.corvidae-hide-note-file-title .inline-title {
+	display: none !important;
+}
+
+body.corvidae-show-note-file-title .inline-title {
+	display: block !important;
+}
+
+/* ![[]] embeds — full note width (height stays auto / aspect-ratio) */
+
+.markdown-preview-view .internal-embed,
+.markdown-preview-view .markdown-embed,
+.markdown-preview-view .markdown-embed-content,
+.markdown-source-view .internal-embed,
+.markdown-source-view .markdown-embed,
+.markdown-source-view .markdown-embed-content {
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box;
+}
+
+.markdown-preview-view .internal-embed img,
+.markdown-preview-view .internal-embed video,
+.markdown-preview-view .markdown-embed img,
+.markdown-preview-view .markdown-embed video,
+.markdown-source-view .internal-embed img,
+.markdown-source-view .internal-embed video,
+.markdown-source-view .markdown-embed img,
+.markdown-source-view .markdown-embed video {
+	width: 100% !important;
+	max-width: 100% !important;
+	height: auto !important;
+}
+
+.markdown-preview-view .internal-embed iframe,
+.markdown-preview-view .markdown-embed iframe,
+.markdown-source-view .internal-embed iframe,
+.markdown-source-view .markdown-embed iframe {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+/* Excalidraw: override default embed width (often inline 400px / max-width) */
+.markdown-preview-view svg.excalidraw-svg,
+.markdown-preview-view .excalidraw-embedded-img,
+.markdown-preview-view .excalidraw-svg-center,
+.markdown-preview-view .excalidraw-svg-left,
+.markdown-preview-view .excalidraw-svg-right,
+.markdown-preview-view .excalidraw-svg-left-wrap,
+.markdown-preview-view .excalidraw-svg-right-wrap,
+.markdown-source-view svg.excalidraw-svg,
+.markdown-source-view .excalidraw-embedded-img,
+.markdown-source-view .excalidraw-svg-center,
+.markdown-source-view .excalidraw-svg-left,
+.markdown-source-view .excalidraw-svg-right,
+.markdown-source-view .excalidraw-svg-left-wrap,
+.markdown-source-view .excalidraw-svg-right-wrap {
+	width: 100% !important;
+	max-width: 100% !important;
+	height: auto !important;
+}
+
+.markdown-preview-view .internal-embed.media-embed.image-embed,
+.markdown-source-view .internal-embed.media-embed.image-embed {
+	width: 100% !important;
+	max-width: 100% !important;
+	display: block;
+}
+
 /* CORVIDAE – Graph-Legende */
 
 .corvidae-legend-host {
@@ -24,11 +94,11 @@
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 	font-size: 12px;
 	color: var(--text-normal);
-	pointer-events: none;
+	pointer-events: auto;
 	user-select: none;
 	max-height: 40vh;
 	overflow-y: auto;
-	min-width: 140px;
+	min-width: 160px;
 }
 
 .corvidae-legend-title {
@@ -42,6 +112,20 @@
 	width: 100%;
 }
 
+.corvidae-legend-filter {
+	margin-bottom: 8px;
+}
+
+.corvidae-legend-color-select {
+	width: 100%;
+	font-size: 12px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	padding: 4px 6px;
+}
+
 .corvidae-legend-list {
 	display: flex;
 	flex-direction: column;
@@ -52,6 +136,14 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	cursor: pointer;
+	border-radius: 4px;
+	padding: 2px 4px;
+	margin: 0 -4px;
+}
+
+.corvidae-legend-item:hover {
+	background: var(--background-modifier-hover);
 }
 
 .corvidae-legend-dot {
@@ -67,6 +159,11 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: 180px;
+}
+
+.corvidae-legend-empty {
+	color: var(--text-muted);
+	font-size: 11px;
 }
 
 /* Explorer-Toolbar ausblenden (New note, Sort, …) */
@@ -87,6 +184,21 @@ body .nav-files-container .nav-buttons-container {
 
 .nav-folder.corvidae-folder-note > .nav-folder-title > .nav-folder-title-content:hover {
 	color: var(--nav-item-color-hover);
+}
+
+/* Versiegelte Entwicklungs-Projektordner: kein Aufklappen, aber klickbar */
+.nav-folder.corvidae-dev-sealed > .nav-folder-title > .nav-folder-collapse-indicator,
+.nav-folder.corvidae-dev-sealed > .nav-folder-title > .tree-item-icon.collapse-icon {
+	display: none !important;
+	pointer-events: none;
+}
+
+.nav-folder.corvidae-dev-sealed > .nav-folder-title {
+	cursor: pointer;
+}
+
+.nav-folder.corvidae-dev-sealed > .nav-folder-children {
+	display: none !important;
 }
 
 /* Aufklapp-Pfeil → Kreis (nur Datei-Explorer) */
@@ -169,9 +281,144 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 	display: none;
 }
 
-/* Hide new-tab (+) while only the full dashboard is shown */
+/* Hide new-tab (+) on root tab strips */
 .workspace-tabs.corvidae-hide-new-tab .workspace-tab-header-new-tab {
 	display: none;
+}
+
+/* ```corvidaehtml``` — sandboxed HTML page embed (auto-height) */
+.corvidae-html-embed {
+	width: 100%;
+	margin: 0.5em 0;
+	overflow: hidden;
+}
+
+.corvidae-html-iframe {
+	width: 100%;
+	height: 0;
+	border: 0;
+	display: block;
+	overflow: hidden;
+	background: var(--background-primary);
+}
+
+/* Native tables: SUM overlay + Euro — Reading View only */
+.markdown-preview-view .corvidae-table-cell,
+.markdown-preview-view td.corvidae-table-cell,
+.markdown-preview-view .table-cell-wrapper.corvidae-table-cell {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+.markdown-preview-view .corvidae-table-cell > .corvidae-table-src {
+	display: none;
+}
+
+.markdown-preview-view .corvidae-table-cell > .corvidae-table-display {
+	display: inline;
+}
+
+.markdown-preview-view .corvidae-table-cell:focus-within > .corvidae-table-src {
+	display: inline;
+}
+
+.markdown-preview-view .corvidae-table-cell:focus-within > .corvidae-table-display {
+	display: none;
+}
+
+/* Cell merge markers << / ^^ — Reading View only */
+.markdown-preview-view td.corvidae-table-merged-away,
+.markdown-preview-view th.corvidae-table-merged-away {
+	display: none !important;
+}
+
+.markdown-preview-view td.corvidae-table-merge-anchor,
+.markdown-preview-view th.corvidae-table-merge-anchor {
+	vertical-align: middle;
+}
+
+/* Reading View: many tables side by side (wrap if needed), 8px gap */
+.markdown-preview-view .corvidae-tables-side {
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: wrap !important;
+	align-items: flex-start !important;
+	gap: 8px !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	margin: 0.5em 0 !important;
+	box-sizing: border-box !important;
+}
+
+.markdown-preview-view .corvidae-tables-side-col {
+	flex: 1 1 160px !important;
+	min-width: 140px !important;
+	max-width: 100% !important;
+	margin: 0 !important;
+	overflow-x: auto;
+}
+
+.markdown-preview-view .corvidae-tables-side-col > .el-table,
+.markdown-preview-view .corvidae-tables-side-col > .el-p,
+.markdown-preview-view .corvidae-tables-side-col > [class^="el-h"],
+.markdown-preview-view .corvidae-tables-side-col > .corvidae-tables-side-item {
+	width: 100% !important;
+	max-width: 100% !important;
+	margin: 0 0 0.35em 0 !important;
+	display: block !important;
+	float: none !important;
+}
+
+.markdown-preview-view .corvidae-tables-side-col > .el-table {
+	margin-bottom: 0 !important;
+}
+
+.markdown-preview-view .corvidae-tables-side-col table {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+.markdown-preview-view .corvidae-tables-side-gap {
+	display: none !important;
+}
+
+/* Keep empty table columns visible (do not collapse blank cells) */
+.markdown-preview-view table {
+	table-layout: auto;
+}
+
+.markdown-preview-view td.corvidae-table-empty-col,
+.markdown-preview-view th.corvidae-table-empty-col,
+.markdown-preview-view td:empty,
+.markdown-preview-view th:empty {
+	min-width: 1.75em !important;
+	padding-left: 0.5em !important;
+	padding-right: 0.5em !important;
+}
+
+/* Truly blank cells only — never hide "-" placeholders */
+.markdown-preview-view .corvidae-table-empty-keep {
+	display: inline;
+	user-select: none;
+}
+
+/* Callout link favicon (replaces pencil when title has external URL) */
+.corvidae-callout-favicon {
+	width: var(--icon-size, 18px);
+	height: var(--icon-size, 18px);
+	object-fit: contain;
+	display: block;
+}
+
+/* Heading opens all external callout links in its section */
+.markdown-rendered .corvidae-heading-open-links,
+.markdown-preview-view .corvidae-heading-open-links {
+	cursor: pointer;
+}
+
+.markdown-rendered .corvidae-heading-open-links:hover,
+.markdown-preview-view .corvidae-heading-open-links:hover {
+	color: var(--text-accent);
 }
 
 /* Bottom dashboard bar: no tab strip */
@@ -619,7 +866,7 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 }
 
 .corvidae-box-note-workspace .inline-title {
-	display: none;
+	display: none !important;
 }
 
 .corvidae-box-note-workspace .markdown-preview-view .metadata-container {
@@ -1029,6 +1276,13 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 	margin-bottom: 12px;
 }
 
+.corvidae-development-folders-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 8px;
+}
+
 .corvidae-tickets-settings-card {
 	padding: 8px 12px;
 	border: 1px solid var(--background-modifier-border);
@@ -1044,4 +1298,203 @@ body .workspace-tab-header[data-type="corvidae-dashboard"] {
 	font-size: var(--font-ui-smaller);
 	color: var(--text-muted);
 }
+
+.corvidae-tips-view {
+	padding: 0;
+	overflow: auto;
+	height: 100%;
+}
+
+.corvidae-tips-preview {
+	padding: var(--size-4-4);
+	max-width: 100%;
+}
+
+.corvidae-tips-error {
+	color: var(--text-muted);
+	padding: var(--size-4-4);
+}
+
+/* CORVIDAE – Custom Graph */
+
+.corvidae-custom-graph-ribbon {
+	position: relative;
+}
+
+.corvidae-custom-graph-ribbon-badge {
+	position: absolute;
+	right: -2px;
+	bottom: -2px;
+	min-width: 1.1em;
+	height: 1.1em;
+	padding: 0 3px;
+	border-radius: 999px;
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1.1em;
+	text-align: center;
+	pointer-events: none;
+	box-sizing: border-box;
+}
+
+.corvidae-custom-graph-view {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 0;
+	overflow: hidden;
+	--corvidae-cg-folder: #4a90d9;
+	--corvidae-cg-file: #6b7280;
+	--corvidae-cg-function: #c9842c;
+}
+
+.corvidae-custom-graph-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	flex-shrink: 0;
+}
+
+.corvidae-custom-graph-bonus-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	cursor: pointer;
+}
+
+.corvidae-custom-graph-bonus-btn svg {
+	width: 18px;
+	height: 18px;
+}
+
+.corvidae-custom-graph-bonus-btn.is-active {
+	color: #e03131;
+	border-color: rgba(224, 49, 49, 0.45);
+	background: rgba(224, 49, 49, 0.12);
+}
+
+.corvidae-custom-graph-edge-control {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.corvidae-custom-graph-edge-label {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+
+.corvidae-custom-graph-edge-slider {
+	width: 140px;
+	max-width: 28vw;
+	accent-color: var(--interactive-accent);
+}
+
+.corvidae-custom-graph-empty {
+	padding: var(--size-4-4);
+	color: var(--text-muted);
+}
+
+.corvidae-custom-graph-host,
+.corvidae-custom-graph-canvas-host {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+	background: var(--background-primary);
+}
+
+.corvidae-custom-graph-svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+	touch-action: none;
+}
+
+.corvidae-custom-graph-edge {
+	stroke: var(--background-modifier-border);
+	stroke-width: 1.25;
+	stroke-opacity: 0.85;
+}
+
+.corvidae-custom-graph-edge.is-function {
+	stroke: var(--corvidae-cg-function, #c9842c);
+	stroke-opacity: 0.28;
+	stroke-width: 0.75;
+}
+
+.corvidae-custom-graph-node {
+	cursor: pointer;
+}
+
+.corvidae-custom-graph-node-circle {
+	stroke: var(--background-primary);
+	stroke-width: 1.5;
+}
+
+.corvidae-custom-graph-node.is-folder .corvidae-custom-graph-node-circle {
+	fill: var(--corvidae-cg-folder);
+}
+
+.corvidae-custom-graph-node.is-file .corvidae-custom-graph-node-circle {
+	fill: var(--corvidae-cg-file);
+}
+
+.corvidae-custom-graph-node.is-function .corvidae-custom-graph-node-circle {
+	fill: var(--corvidae-cg-function);
+	stroke-width: 1;
+}
+
+.corvidae-custom-graph-node-label {
+	fill: var(--text-normal);
+	font-size: 11px;
+	pointer-events: none;
+}
+
+/* Function labels only on hover — avoids white smear with many symbols */
+.corvidae-custom-graph-node.is-function .corvidae-custom-graph-node-label {
+	opacity: 0;
+	font-size: 10px;
+	fill: var(--text-muted);
+}
+
+.corvidae-custom-graph-node.is-function:hover .corvidae-custom-graph-node-label,
+.corvidae-custom-graph-node.is-function:focus-within .corvidae-custom-graph-node-label {
+	opacity: 1;
+}
+
+.corvidae-custom-graph-node.is-function:hover .corvidae-custom-graph-node-circle {
+	stroke: var(--text-normal);
+	stroke-width: 1.5;
+}
+
+.corvidae-custom-graph-settings-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.corvidae-custom-graph-settings-card {
+	padding: 8px 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background: var(--background-secondary);
+}
+
 

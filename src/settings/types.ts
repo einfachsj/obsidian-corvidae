@@ -12,6 +12,23 @@ export interface TicketProjectConfig {
 	developmentLogPath: string;
 }
 
+export interface CustomGraphConfig {
+	id: string;
+	/** Anzeigename, z.B. "Test Graph" */
+	name: string;
+	/**
+	 * Vault-relativer Projektordner (z.B. CURSOR/corvidae-v-2.0.0).
+	 * Hier liegt `{folder}/dev.md`; Klick im Explorer öffnet den Graph.
+	 */
+	folder: string;
+	/**
+	 * Code-Ordner (z.B. `src` oder vault-relativ unter dem Projekt).
+	 * Scan-Wurzel für Ordner-/Datei-Knoten im Custom Graph.
+	 * Leer = gesamter Projektordner.
+	 */
+	codeFolder: string;
+}
+
 export interface CorvidaeSettings {
 	/** UI-Sprache (en, de oder auto = Obsidian UI) */
 	language: CorvidaeLanguageSetting;
@@ -20,6 +37,12 @@ export interface CorvidaeSettings {
 
 	/** Auch Knoten ohne eigene Farbe in der Legende */
 	legendShowDefaultAndUncolored: boolean;
+
+	/** Graph: ![[…​.base]] / ![[…​.canvas]]-Embeds echt entkoppeln (keine Linie, keine Force) */
+	graphHideBaseEmbedLinks: boolean;
+
+	/** Graph: nur Kanten aus Frontmatter-Feld `link` (Body-[[…]] bleiben klickbar) */
+	graphOnlyFrontmatterLinks: boolean;
 
 	/** Frontmatter-Feld für Knotengröße (1–100) */
 	sizeProperty: string;
@@ -59,8 +82,23 @@ export interface CorvidaeSettings {
 	/** Name/Name.md im Explorer ausblenden (Ordner = Notiz) */
 	folderNoteHideInExplorer: boolean;
 
+	/**
+	 * Vault-relative Entwicklungsordner (z.B. CURSOR): Container + direkte
+	 * Kinder (Projekte) sichtbar mit DEV-Label; Inhalt unter den Kindern versiegelt.
+	 */
+	developmentFolders: string[];
+
+	/**
+	 * Custom Graphs: Name + Projektordner (`dev.md`) + optionaler Code-Ordner
+	 * (Scan-Wurzel). Eigener SVG-Hierarchy-Graph, nicht die Core-Graph-Engine.
+	 */
+	customGraphs: CustomGraphConfig[];
+
 	/** Leere Tabs im Hauptbereich durch Dashboard ersetzen */
 	dashboardAutoOpen: boolean;
+
+	/** Notiz-Dateititel (.inline-title) in Markdown-Dateien anzeigen */
+	showNoteFileTitle: boolean;
 
 	/** File-Properties-Sidebar beim ersten Start bereits eingerichtet */
 	filePropertiesSidebarInitialized: boolean;
@@ -76,6 +114,8 @@ export const DEFAULT_SETTINGS: CorvidaeSettings = {
 	language: "auto",
 	showLegend: true,
 	legendShowDefaultAndUncolored: false,
+	graphHideBaseEmbedLinks: true,
+	graphOnlyFrontmatterLinks: true,
 	sizeProperty: "size",
 	minSize: 1,
 	maxSize: 100,
@@ -90,7 +130,10 @@ export const DEFAULT_SETTINGS: CorvidaeSettings = {
 	folderNoteExcludePrefixes: [".trash"],
 	folderNoteOpenOnClick: true,
 	folderNoteHideInExplorer: true,
+	developmentFolders: [],
+	customGraphs: [],
 	dashboardAutoOpen: true,
+	showNoteFileTitle: false,
 	filePropertiesSidebarInitialized: false,
 	ticketProjects: [],
 	ticketsSidebarAutoOpen: true,

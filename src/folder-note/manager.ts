@@ -5,6 +5,7 @@
  */
 
 import { App, TFile, TFolder } from "obsidian";
+import { isInsideSealedDevelopmentContent } from "../explorer/development-folders";
 import { t } from "../i18n";
 import type { CorvidaeSettings } from "../settings";
 import {
@@ -248,7 +249,10 @@ export class FolderNoteManager {
 				return true;
 			}
 		}
-		return false;
+		return isInsideSealedDevelopmentContent(
+			path,
+			this.settings.developmentFolders
+		);
 	}
 
 	private isProcessing(path: string): boolean {

@@ -16,6 +16,15 @@ import {
 	DashboardTerminalBoxEmbed,
 	DashboardTicketBoxEmbed,
 } from "./dashboard";
+import { registerCalloutLinkEnhancer } from "./callout-links";
+import {
+	CORVIDAE_CUSTOM_GRAPH_VIEW,
+	CorvidaeCustomGraphView,
+	CustomGraphManager,
+	createCustomGraphId,
+} from "./custom-graph";
+import { registerCorvidaeHtmlCodeBlock } from "./html-codeblock";
+import { registerCorvidaeTableFormulas } from "./table-formulas";
 import { ExplorerManager } from "./explorer";
 import { FolderNoteCreateUI, FolderNoteManager } from "./folder-note";
 import { isRecord } from "./frontmatter/utils";
@@ -28,6 +37,8 @@ import {
 	CorvidaeSettingTab,
 	DEFAULT_SETTINGS,
 	type CorvidaeSettings,
+	CORVIDAE_TIPS_VIEW,
+	CorvidaeTipsView,
 } from "./settings";
 import {
 	activateTicketsSidebar,
@@ -43,7 +54,7 @@ export default class CorvidaePlugin extends Plugin {
 	private folderNoteManager!: FolderNoteManager;
 	private folderNoteCreateUI!: FolderNoteCreateUI;
 	private hybridLinkManager!: HybridLinkManager;
-	private explorerManager!: ExplorerManager;
+	explorerManager!: ExplorerManager;
 	private graphPatcher!: GraphPatcher;
 	private legendManager!: LegendManager;
 	private noteBootstrap!: NoteBootstrap;
@@ -57,6 +68,7 @@ export default class CorvidaePlugin extends Plugin {
 	dashboardTerminalBoxEmbed!: DashboardTerminalBoxEmbed;
 	dashboardTicketBoxEmbed!: DashboardTicketBoxEmbed;
 	dashboardBoxStore!: DashboardBoxStore;
+	customGraphManager!: CustomGraphManager;
 
 	async onload(): Promise<void> {
 		this.dashboardBoxStore = new DashboardBoxStore(this);
@@ -69,10 +81,14 @@ export default class CorvidaePlugin extends Plugin {
 		this.dashboardTicketBoxEmbed.onload();
 		await this.loadSettings();
 		initI18n(() => this.settings.language);
+		this.applyNoteFileTitleVisibility();
 
 		this.graphPatcher = new GraphPatcher(this.app, this.settings);
-		this.legendManager = new LegendManager(this.settings);
+		this.legendManager = new LegendManager(this.app, this.settings);
 		this.noteBootstrap = new NoteBootstrap(this.app, this.settings);
+		registerCalloutLinkEnhancer(this);
+		registerCorvidaeHtmlCodeBlock(this);
+		registerCorvidaeTableFormulas(this);
 		this.ticketManager = new TicketManager(this.app, this.noteBootstrap);
 		this.folderNoteManager = new FolderNoteManager(this.app, this.settings);
 		this.hybridLinkManager = new HybridLinkManager(this.app, this.settings);
@@ -80,6 +96,8 @@ export default class CorvidaePlugin extends Plugin {
 		this.folderNoteCreateUI.onload();
 		this.explorerManager = new ExplorerManager(this.app, this, this.settings);
 		this.explorerManager.onload();
+		this.customGraphManager = new CustomGraphManager(this);
+		this.customGraphManager.onload();
 
 		this.registerView(
 			CORVIDAE_DASHBOARD_VIEW,
@@ -89,6 +107,16 @@ export default class CorvidaePlugin extends Plugin {
 		this.registerView(
 			CORVIDAE_TICKETS_VIEW,
 			(leaf) => new CorvidaeTicketsView(leaf, this)
+		);
+
+		this.registerView(
+			CORVIDAE_TIPS_VIEW,
+			(leaf) => new CorvidaeTipsView(leaf, this)
+		);
+
+		this.registerView(
+			CORVIDAE_CUSTOM_GRAPH_VIEW,
+			(leaf) => new CorvidaeCustomGraphView(leaf, this)
 		);
 
 		this.dashboardLayoutManager = new DashboardLayoutManager(this.app, this);
@@ -111,8 +139,12 @@ export default class CorvidaePlugin extends Plugin {
 			},
 		});
 
-		this.addRibbonIcon("list-checks", t("tickets.command"), () => {
-			void activateTicketsSidebar(this.app);
+		this.addCommand({
+			id: "open-custom-graph",
+			name: t("customGraph.command"),
+			callback: () => {
+				void this.customGraphManager.activate();
+			},
 		});
 
 		this.registerCorvidaePropertyTypes();
@@ -217,6 +249,8 @@ export default class CorvidaePlugin extends Plugin {
 	}
 
 	onunload(): void {
+		document.body.removeClass("corvidae-hide-note-file-title");
+		document.body.removeClass("corvidae-show-note-file-title");
 		this.folderNoteCreateUI.onunload();
 		this.explorerManager.onunload();
 		this.dashboardGraphBoxEmbed.onunload();
@@ -230,6 +264,17 @@ export default class CorvidaePlugin extends Plugin {
 		this.stopPatchInterval();
 	}
 
+	applyNoteFileTitleVisibility(): void {
+		document.body.toggleClass(
+			"corvidae-hide-note-file-title",
+			!this.settings.showNoteFileTitle
+		);
+		document.body.toggleClass(
+			"corvidae-show-note-file-title",
+			this.settings.showNoteFileTitle
+		);
+	}
+
 	onLanguageChanged(): void {
 		this.folderNoteCreateUI.refreshUi();
 		this.explorerManager.scheduleFolderRefresh();
@@ -237,6 +282,7 @@ export default class CorvidaePlugin extends Plugin {
 		this.refreshGraphFeatures();
 		this.refreshDashboardViews();
 		this.refreshTicketsViews();
+		this.customGraphManager.onLanguageChanged();
 	}
 
 	registerCorvidaePropertyTypes(): void {
@@ -436,6 +482,13 @@ export default class CorvidaePlugin extends Plugin {
 			this.settings.legendShowDefaultAndUncolored =
 				settingsData.legendShowDefaultAndUncolored;
 		}
+		if (typeof settingsData.graphHideBaseEmbedLinks === "boolean") {
+			this.settings.graphHideBaseEmbedLinks = settingsData.graphHideBaseEmbedLinks;
+		}
+		if (typeof settingsData.graphOnlyFrontmatterLinks === "boolean") {
+			this.settings.graphOnlyFrontmatterLinks =
+				settingsData.graphOnlyFrontmatterLinks;
+		}
 		if (typeof settingsData.autoFrontmatter === "boolean") {
 			this.settings.autoFrontmatter = settingsData.autoFrontmatter;
 		}
@@ -454,6 +507,9 @@ export default class CorvidaePlugin extends Plugin {
 		}
 		if (typeof settingsData.dashboardAutoOpen === "boolean") {
 			this.settings.dashboardAutoOpen = settingsData.dashboardAutoOpen;
+		}
+		if (typeof settingsData.showNoteFileTitle === "boolean") {
+			this.settings.showNoteFileTitle = settingsData.showNoteFileTitle;
 		}
 		if (typeof settingsData.filePropertiesSidebarInitialized === "boolean") {
 			this.settings.filePropertiesSidebarInitialized =
@@ -498,6 +554,41 @@ export default class CorvidaePlugin extends Plugin {
 				settingsData.folderNoteExcludePrefixes.filter(
 					(p): p is string => typeof p === "string"
 				);
+		}
+
+		if (Array.isArray(settingsData.developmentFolders)) {
+			this.settings.developmentFolders = settingsData.developmentFolders.filter(
+				(p): p is string => typeof p === "string"
+			);
+		}
+
+		if (Array.isArray(settingsData.customGraphs)) {
+			this.settings.customGraphs = settingsData.customGraphs.flatMap((entry) => {
+				if (!isRecord(entry)) return [];
+				if (typeof entry.id !== "string") return [];
+				if (typeof entry.folder !== "string") return [];
+				return [
+					{
+						id: entry.id,
+						name: typeof entry.name === "string" ? entry.name : "",
+						folder: entry.folder,
+						codeFolder:
+							typeof entry.codeFolder === "string" ? entry.codeFolder : "",
+					},
+				];
+			});
+		} else if (typeof settingsData.customGraphFolder === "string") {
+			const folder = settingsData.customGraphFolder.trim();
+			this.settings.customGraphs = folder
+				? [
+						{
+							id: createCustomGraphId(),
+							name: "Custom Graph",
+							folder,
+							codeFolder: "",
+						},
+					]
+				: [];
 		}
 
 		if (!Array.isArray(settingsData.ticketProjects)) {

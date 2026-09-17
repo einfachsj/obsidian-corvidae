@@ -1,5 +1,6 @@
 import { App, TFolder, WorkspaceLeaf } from "obsidian";
 import { isFolderNotePath } from "../folder-note";
+import { shouldCollapseExplorerFolder } from "./development-folders";
 import { compareExplorerPaths } from "./sort";
 
 const ORIGINAL_METHOD = Symbol("corvidae-original-getSortedFolderItems");
@@ -25,7 +26,8 @@ export class FileExplorerAliasSortPatch {
 
 	constructor(
 		private app: App,
-		private shouldHideFolderNotes: () => boolean
+		private shouldHideFolderNotes: () => boolean,
+		private getDevelopmentFolders: () => readonly string[]
 	) {}
 
 	install(): boolean {
@@ -46,12 +48,17 @@ export class FileExplorerAliasSortPatch {
 
 		const app = this.app;
 		const shouldHideFolderNotes = this.shouldHideFolderNotes;
+		const getDevelopmentFolders = this.getDevelopmentFolders;
 
 		proto[ORIGINAL_METHOD] = original;
 		proto.getSortedFolderItems = function (
 			this: FileExplorerViewLike,
 			folder: TFolder
 		): FileExplorerItem[] {
+			if (shouldCollapseExplorerFolder(folder.path, getDevelopmentFolders())) {
+				return [];
+			}
+
 			const items = proto[ORIGINAL_METHOD].call(this, folder) ?? [];
 			const filtered = items.filter((item) => {
 				const path = item?.file?.path;

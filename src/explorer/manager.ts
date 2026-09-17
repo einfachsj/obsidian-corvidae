@@ -5,6 +5,7 @@
 import { App, Plugin, TAbstractFile, TFile, TFolder } from "obsidian";
 import { getFolderNoteForFolder, isFolderNotePath } from "../folder-note";
 import type { CorvidaeSettings } from "../settings";
+import { isSealedDevelopmentChild } from "./development-folders";
 import {
 	applyExplorerTag,
 	clearManagedExplorerTags,
@@ -15,6 +16,7 @@ import { FileExplorerAliasSortPatch } from "./file-explorer-patch";
 
 const FOLDER_CLASS = "corvidae-folder-note";
 const FILE_HIDDEN_CLASS = "corvidae-folder-note-hidden";
+const DEV_SEALED_CLASS = "corvidae-dev-sealed";
 
 function isHtmlElement(value: EventTarget | null): value is HTMLElement {
 	return value !== null && (value as Node).instanceOf?.(HTMLElement) === true;
@@ -32,7 +34,8 @@ export class ExplorerManager {
 	) {
 		this.fileExplorerPatch = new FileExplorerAliasSortPatch(
 			this.app,
-			() => this.hideEnabled()
+			() => this.hideEnabled(),
+			() => this.settings.developmentFolders
 		);
 	}
 
@@ -133,6 +136,7 @@ export class ExplorerManager {
 		}
 		this.fileExplorerPatch.requestSort();
 		this.fileExplorerPatch.scheduleSortRefresh();
+		this.scheduleFolderRefresh();
 	}
 
 	scheduleFolderRefresh(): void {
@@ -230,8 +234,15 @@ export class ExplorerManager {
 			.forEach((el) => el.classList.remove(FOLDER_CLASS));
 	}
 
+	private clearDevSealedMarks(): void {
+		document
+			.querySelectorAll(`.${DEV_SEALED_CLASS}`)
+			.forEach((el) => el.classList.remove(DEV_SEALED_CLASS));
+	}
+
 	private clearAllMarks(): void {
 		this.clearFolderMarks();
+		this.clearDevSealedMarks();
 		this.unhideAllFolderNotes();
 		clearManagedExplorerTags();
 	}
@@ -239,6 +250,7 @@ export class ExplorerManager {
 	private refreshExplorerUi(): void {
 		this.fileExplorerPatch.tryInstallAndSort();
 		this.refreshFolderMarks();
+		this.refreshDevSealedMarks();
 		this.refreshFileTags();
 		this.hideAllFolderNotes();
 	}
@@ -258,7 +270,10 @@ export class ExplorerManager {
 			const file = this.app.vault.getAbstractFileByPath(path);
 			if (!(file instanceof TFile)) continue;
 
-			applyExplorerTag(title, getExplorerFileTag(this.app, file));
+			applyExplorerTag(
+				title,
+				getExplorerFileTag(this.app, file, this.settings.customGraphs)
+			);
 		}
 
 		for (const title of Array.from(
@@ -272,7 +287,39 @@ export class ExplorerManager {
 			const folder = this.app.vault.getAbstractFileByPath(folderPath);
 			if (!(folder instanceof TFolder)) continue;
 
-			applyExplorerTag(title, getExplorerFolderTag(this.app, folder));
+			applyExplorerTag(
+				title,
+				getExplorerFolderTag(
+					this.app,
+					folder,
+					this.settings.developmentFolders
+				)
+			);
+		}
+	}
+
+	private refreshDevSealedMarks(): void {
+		this.clearDevSealedMarks();
+
+		for (const title of Array.from(
+			document.querySelectorAll<HTMLElement>(
+				".nav-files-container .nav-folder-title[data-path]"
+			)
+		)) {
+			const folderPath = title.dataset.path;
+			if (!folderPath) continue;
+			if (
+				!isSealedDevelopmentChild(
+					folderPath,
+					this.settings.developmentFolders
+				)
+			) {
+				continue;
+			}
+
+			const folderEl = title.closest(".nav-folder");
+			folderEl?.classList.add(DEV_SEALED_CLASS);
+			folderEl?.classList.add("is-collapsed");
 		}
 	}
 
@@ -330,7 +377,22 @@ export class ExplorerManager {
 		});
 	}
 
+	private isSealedFolderClick(target: EventTarget | null): boolean {
+		const folder = this.getFolderFromClick(target);
+		if (!folder) return false;
+		return isSealedDevelopmentChild(
+			folder.path,
+			this.settings.developmentFolders
+		);
+	}
+
 	private onClick = (evt: MouseEvent): void => {
+		if (this.isCollapseClick(evt.target) && this.isSealedFolderClick(evt.target)) {
+			evt.preventDefault();
+			evt.stopPropagation();
+			return;
+		}
+
 		if (!this.folderClickEnabled()) return;
 		if (evt.shiftKey || evt.button !== 0) return;
 		if (this.isCollapseClick(evt.target)) return;

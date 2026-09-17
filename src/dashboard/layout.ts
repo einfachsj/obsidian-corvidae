@@ -115,17 +115,7 @@ export class DashboardLayoutManager {
 			if (!tabsEl?.instanceOf(HTMLElement)) continue;
 			if (tabsEl.classList.contains("corvidae-dashboard-bar-tabs")) continue;
 
-			const hasFullDashboard =
-				tabsEl.querySelector(".corvidae-dashboard-view--full") !== null;
-			const hasOtherTabs =
-				tabsEl.querySelector(
-					'.workspace-tab-header:not([data-type="corvidae-dashboard"])'
-				) !== null;
-
-			tabsEl.toggleClass(
-				"corvidae-hide-new-tab",
-				hasFullDashboard && !hasOtherTabs
-			);
+			tabsEl.toggleClass("corvidae-hide-new-tab", true);
 		}
 
 		this.cleanupBarSplitClasses();

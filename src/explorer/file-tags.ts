@@ -3,18 +3,29 @@
  */
 
 import { App, TFile, TFolder } from "obsidian";
+import { isAnyCustomGraphDevMd } from "../custom-graph/dev-md";
 import { getExplorerTagLabel } from "../i18n";
 import { getFolderNoteForFolder, isFolderNotePath } from "../folder-note";
+import type { CustomGraphConfig } from "../settings";
+import { isSealedDevelopmentChild } from "./development-folders";
 
 export const CORVIDAE_TAG_CLASS = "corvidae-nav-file-tag";
 
-export type ExplorerTag = "NOTE" | "DRAW" | "FOLDER" | "HYBRID";
+export type ExplorerTag = "NOTE" | "DRAW" | "FOLDER" | "HYBRID" | "DEV";
 
 /** Label für eine Datei – null = Obsidian-Standard beibehalten (.base usw.) */
-export function getExplorerFileTag(app: App, file: TFile): ExplorerTag | null {
+export function getExplorerFileTag(
+	app: App,
+	file: TFile,
+	customGraphs: readonly CustomGraphConfig[] = []
+): ExplorerTag | null {
 	if (file.extension === "base") return null;
 
 	if (isExcalidrawFile(app, file)) return "DRAW";
+
+	if (isAnyCustomGraphDevMd(file.path, customGraphs)) {
+		return "DEV";
+	}
 
 	if (file.extension === "md" && !isFolderNotePath(file.path)) {
 		return "NOTE";
@@ -24,7 +35,14 @@ export function getExplorerFileTag(app: App, file: TFile): ExplorerTag | null {
 }
 
 /** Label für einen Ordner */
-export function getExplorerFolderTag(app: App, folder: TFolder): ExplorerTag {
+export function getExplorerFolderTag(
+	app: App,
+	folder: TFolder,
+	developmentFolders: readonly string[] = []
+): ExplorerTag {
+	if (isSealedDevelopmentChild(folder.path, developmentFolders)) {
+		return "DEV";
+	}
 	return getFolderNoteForFolder(app, folder) ? "HYBRID" : "FOLDER";
 }
 

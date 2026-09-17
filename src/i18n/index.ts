@@ -39,7 +39,7 @@ export function t(key: TranslationKey, setting?: CorvidaeLanguageSetting): strin
 }
 
 export function getExplorerTagLabel(
-	tag: "NOTE" | "DRAW" | "FOLDER" | "HYBRID",
+	tag: "NOTE" | "DRAW" | "FOLDER" | "HYBRID" | "DEV",
 	setting?: CorvidaeLanguageSetting
 ): string {
 	switch (tag) {
@@ -51,5 +51,7 @@ export function getExplorerTagLabel(
 			return t("explorer.tag.folder", setting);
 		case "HYBRID":
 			return t("explorer.tag.hybrid", setting);
+		case "DEV":
+			return t("explorer.tag.dev", setting);
 	}
 }

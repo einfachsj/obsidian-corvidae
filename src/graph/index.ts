@@ -1,3 +1,23 @@
 export { GraphPatcher, type LegendEntry } from "./patcher";
 export { LegendManager } from "./legend";
-export type { GraphNode, GraphRenderer, GraphViewLike, WorkspaceLeafLike } from "./types";
+export {
+	DECOUPLE_EMBED_EXTS,
+	isDecoupleEmbedPath,
+	isEmbedOnlyBaseEdge,
+	isEmbedOnlyBaseLink,
+	isEmbedOnlyDecoupledEdge,
+	isEmbedOnlyDecoupledLink,
+} from "./embed-links";
+export type { DecoupleEmbedExt } from "./embed-links";
+export { isFrontmatterLinkPropertyEdge } from "./frontmatter-links";
+
+export type {
+	GraphLink,
+	GraphLinkGraphics,
+	GraphNode,
+	GraphRenderer,
+	GraphViewLike,
+	GraphWorkerLike,
+	WorkspaceLeafLike,
+} from "./types";
+

@@ -1,4 +1,6 @@
 import { App, TFile } from "obsidian";
+import { isAnyCustomGraphDevMd } from "../custom-graph";
+import { isInsideSealedDevelopmentContent } from "../explorer/development-folders";
 import { isExcalidrawFile } from "../explorer/file-tags";
 import { isRecord } from "../frontmatter/utils";
 import type { CorvidaeSettings } from "../settings";
@@ -16,7 +18,19 @@ export class NoteBootstrap {
 	async onFileCreated(file: TFile): Promise<TFile> {
 		if (!this.settings.autoFrontmatter) return file;
 		if (file.extension !== "md") return file;
+		if (file.basename.toLowerCase() === "readme") return file;
 		if (isExcalidrawFile(this.app, file)) return file;
+		if (isAnyCustomGraphDevMd(file.path, this.settings.customGraphs)) {
+			return file;
+		}
+		if (
+			isInsideSealedDevelopmentContent(
+				file.path,
+				this.settings.developmentFolders
+			)
+		) {
+			return file;
+		}
 
 		const target = this.app.vault.getAbstractFileByPath(file.path) ?? file;
 		if (!(target instanceof TFile)) return file;

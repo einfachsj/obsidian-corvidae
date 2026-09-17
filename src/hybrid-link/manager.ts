@@ -1,4 +1,5 @@
 import { App, TAbstractFile, TFile, TFolder } from "obsidian";
+import { isInsideSealedDevelopmentContent } from "../explorer/development-folders";
 import { getFolderNoteForFolder } from "../folder-note";
 import { isRecord } from "../frontmatter/utils";
 import { LINK_PROPERTY } from "../properties/link";
@@ -107,6 +108,15 @@ export class HybridLinkManager {
 			if (path === normalized || path.startsWith(`${normalized}/`)) {
 				return false;
 			}
+		}
+
+		if (
+			isInsideSealedDevelopmentContent(
+				path,
+				this.settings.developmentFolders
+			)
+		) {
+			return false;
 		}
 
 		return true;

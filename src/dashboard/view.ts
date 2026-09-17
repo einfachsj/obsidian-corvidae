@@ -8,6 +8,7 @@ import {
 import { t } from "../i18n";
 import type CorvidaePlugin from "../main";
 import type { CorvidaeSettings } from "../settings";
+import { openTipsNote } from "../settings/open-tips-note";
 import {
 	getBarBoxWidthPx,
 	DASHBOARD_GRID_COLUMNS,
@@ -29,7 +30,6 @@ import {
 } from "./terminal-integration";
 
 export const CORVIDAE_DASHBOARD_VIEW = "corvidae-dashboard";
-export const CORVIDAE_PLUGIN_URL = "https://plugin.corvidae.app";
 
 export interface CorvidaeDashboardState {
 	mode?: "full" | "bar";
@@ -319,11 +319,11 @@ export class CorvidaeDashboardView extends ItemView {
 			cls: "corvidae-dashboard-crow-link",
 			text: "🐦‍⬛",
 		});
-		crowLink.setAttribute("role", "link");
+		crowLink.setAttribute("role", "button");
 		crowLink.setAttribute("tabindex", "0");
 		crowLink.setAttribute("aria-label", t("dashboard.crow.link"));
 		const openCrowLink = (): void => {
-			window.open(CORVIDAE_PLUGIN_URL);
+			void openTipsNote(this.app, this.plugin);
 		};
 		crowLink.addEventListener("click", openCrowLink);
 		crowLink.addEventListener("keydown", (evt) => {
